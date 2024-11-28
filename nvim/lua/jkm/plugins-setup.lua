@@ -42,6 +42,9 @@ return packer.startup(function(use)
   -- maximize and restore current window
   use("szw/vim-maximizer")
 
+  -- autoclose brackets
+  use("m4xshen/autoclose.nvim")
+
   -- essential plugins
   use("tpope/vim-surround")
   use("vim-scripts/ReplaceWithRegister")
@@ -62,6 +65,8 @@ return packer.startup(function(use)
   use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
   use({ "nvim-telescope/telescope.nvim", branch = "0.1.x" })
 
+  use("ThePrimeagen/vim-be-good")
+
   -- autocompletion
   use("hrsh7th/nvim-cmp")
   use("hrsh7th/cmp-buffer")
@@ -72,7 +77,7 @@ return packer.startup(function(use)
   use("saadparwaiz1/cmp_luasnip")
   use("rafamadriz/friendly-snippets")
 
- -- managing & installing lsp servers, linters & formatters
+  -- managing & installing lsp servers, linters & formatters
   use("williamboman/mason.nvim") -- in charge of managing lsp servers, linters & formatters
   use("williamboman/mason-lspconfig.nvim") -- bridges gap b/w mason & lspconfig
 

@@ -89,6 +89,11 @@ _G.packer_plugins = {
     path = "C:\\Users\\joaki\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\ReplaceWithRegister",
     url = "https://github.com/vim-scripts/ReplaceWithRegister"
   },
+  ["autoclose.nvim"] = {
+    loaded = true,
+    path = "C:\\Users\\joaki\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\autoclose.nvim",
+    url = "https://github.com/m4xshen/autoclose.nvim"
+  },
   ["cmp-buffer"] = {
     loaded = true,
     path = "C:\\Users\\joaki\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\cmp-buffer",
@@ -168,6 +173,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "C:\\Users\\joaki\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
+  },
+  ["vim-be-good"] = {
+    loaded = true,
+    path = "C:\\Users\\joaki\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\vim-be-good",
+    url = "https://github.com/ThePrimeagen/vim-be-good"
   },
   ["vim-maximizer"] = {
     loaded = true,
