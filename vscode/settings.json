@@ -1,0 +1,125 @@
+{
+  // General
+  "explorer.sortOrder": "filesFirst",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "workbench.startupEditor": "none",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": false,
+  "editor.lineNumbers": "relative",
+  "extensions.ignoreRecommendations": true,
+  "editor.inlineSuggest.showToolbar": "always",
+  "svelte.enable-ts-plugin": true,
+  // Theme
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.colorTheme": "Dracula Theme",
+  // CoPilot
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false,
+    "go": false
+  },
+  // Vim
+  "vim.easymotion": true,
+  "vim.ignorecase": true,
+  "vim.smartcase": true,
+  "vim.useSystemClipboard": true,
+  "vim.leader": " ",
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": ["<C-h>"],
+      "commands": ["workbench.action.navigateLeft"]
+    },
+    {
+      "before": ["<C-j>"],
+      "commands": ["workbench.action.navigateDown"]
+    },
+    {
+      "before": ["<C-k>"],
+      "commands": ["workbench.action.navigateUp"]
+    },
+    {
+      "before": ["<C-l>"],
+      "commands": ["workbench.action.navigateRight"]
+    }
+  ],
+  "vim.normalModeKeyBindings": [
+    // Window management
+    {
+      "before": ["<leader>", "s", "v"],
+      "commands": ["workbench.action.splitEditorRight"]
+    },
+    {
+      "before": ["<leader>", "s", "h"],
+      "commands": ["workbench.action.splitEditorDown"]
+    },
+    {
+      "before": ["<leader>", "s", "x"],
+      "commands": ["workbench.action.closeActiveEditor"]
+    },
+    {
+      "before": ["<leader>", "s", "m"],
+      "commands": ["workbench.action.toggleEditorWidths"]
+    },
+    // Terminal management
+    {
+      "before": ["<leader>", "t", "t"],
+      "commands": ["workbench.action.terminal.toggleTerminal"]
+    },
+    {
+      "before": ["<leader>", "t", "n"],
+      "commands": ["workbench.action.terminal.new"]
+    },
+    {
+      "before": ["<leader>", "t", "x"],
+      "commands": ["workbench.action.terminal.kill"]
+    },
+    {
+      "before": ["<leader>", "t", "s"],
+      "commands": ["workbench.action.terminal.split"]
+    },
+    // Explorer
+    {
+      "before": ["<leader>", "e", "f"],
+      "commands": ["workbench.action.focusSideBar"]
+    },
+    {
+      "before": ["<leader>", "e", "e"],
+      "commands": ["workbench.action.toggleSidebarVisibility"]
+    },
+    // Tabbing
+    {
+      "before": ["<Tab>"],
+      "commands": ["workbench.action.nextEditorInGroup"]
+    },
+    {
+      "before": ["<S-Tab>"],
+      "commands": ["workbench.action.previousEditorInGroup"]
+    },
+    // Command pallet
+    {
+      "before": ["<leader>", "f", "f"],
+      "commands": ["workbench.action.quickOpen"]
+    },
+    {
+      "before": ["<leader>", "f", "c"],
+      "commands": ["workbench.action.showCommands"]
+    },
+    // Project management
+    {
+      "before": ["<leader>", "n", "n"],
+      "commands": ["workbench.action.newWindow"]
+    },
+    {
+      "before": ["<leader>", "n", "o"],
+      "commands": ["workbench.action.files.openFolder"]
+    },
+    {
+      "before": ["<leader>", "n", "x"],
+      "commands": ["workbench.action.closeWindow"]
+    }
+  ]
+}
