@@ -64,6 +64,11 @@
       "before": ["<leader>", "s", "m"],
       "commands": ["workbench.action.toggleEditorWidths"]
     },
+    {
+      "before": ["<leader>", "s", "d"],
+      "commands": ["markdown.showPreview"],
+      "when": "!notebookEditorFocused && editorLangId == 'markdownd'"
+    },
     // Terminal management
     {
       "before": ["<leader>", "t", "t"],
