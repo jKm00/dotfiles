@@ -126,5 +126,17 @@
       "before": ["<leader>", "n", "x"],
       "commands": ["workbench.action.closeWindow"]
     }
-  ]
+  ],
+  "editor.fontSize": 14,
+  "workbench.editor.customLabels.patterns": {
+    "*/src/**/+layout.server.ts": "[LS] ${dirname}",
+    "*/src/**/+page.server.ts": "[PS] ${dirname}",
+    "*/src/**/+page.svelte": "[P] ${dirname}",
+    "*/src/**/+layout.svelte": "[L] ${dirname}",
+    "*/src/**/+server.ts": "[S] ${dirname}",
+    "*/src/**/+page.ts": "[p] ${dirname}",
+    "*/src/**/+layout.ts": "[l] ${dirname}"
+  },
+  "workbench.sideBar.location": "right",
+  "terminal.integrated.env.windows": {}
 }
