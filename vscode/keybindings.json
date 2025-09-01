@@ -1,4 +1,5 @@
 [
+  // Terminal
   {
     "key": "ctrl+h",
     "command": "workbench.action.terminal.focusPreviousPane",
@@ -20,6 +21,11 @@
     "when": "terminalFocus"
   },
   {
+    "key": "ctrl+t",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+  // Navigation
+  {
     "key": "ctrl+j",
     "command": "workbench.action.quickOpenNavigateNext",
     "when": "inQuickOpen"
@@ -34,13 +40,10 @@
     "command": "workbench.action.focusActiveEditorGroup"
   },
   {
-    "key": "ctrl+t",
-    "command": "workbench.action.terminal.toggleTerminal"
-  },
-  {
     "key": "ctrl+e",
     "command": "workbench.action.focusSideBar"
   },
+  // Creation
   {
     "key": "ctrl+n",
     "command": "explorer.newFile",
@@ -50,5 +53,26 @@
     "key": "ctrl+shift+n",
     "command": "explorer.newFolder",
     "when": "explorerViewletVisible"
+  },
+  // Window resizing
+  {
+    "key": "alt+j",
+    "command": "workbench.action.terminal.resizePaneDown",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "alt+k",
+    "command": "workbench.action.terminal.resizePaneUp",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "alt+l",
+    "command": "workbench.action.increaseViewSize",
+    "when": "editorFocus"
+  },
+  {
+    "key": "alt+h",
+    "command": "workbench.action.decreaseViewSize",
+    "when": "editorFocus"
   }
 ]
