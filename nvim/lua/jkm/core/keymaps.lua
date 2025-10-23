@@ -20,3 +20,9 @@ keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "New tab with curren
 -- Buffer
 keymap.set("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Close buffer" })
 
+-- Collapsing
+keymap.set("n", "<leader>fc", "zc", { desc = "Close fold" })
+keymap.set("n", "<leader>fo", "zo", { desc = "Open fold" })
+keymap.set("n", "<leader>ff", "za", { desc = "Toggle fold" })
+keymap.set("n", "<leader>fa", "zM", { desc = "Close all folds" })
+keymap.set("n", "<leader>fz", "zR", { desc = "Open all folds" })
