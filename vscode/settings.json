@@ -1,20 +1,56 @@
 {
   // General
+  "workbench.startupEditor": "none",
   "explorer.sortOrder": "filesFirst",
+  "workbench.sideBar.location": "right",
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "workbench.startupEditor": "none",
+  "editor.defaultFormatter": "charliermarsh.ruff",
   "editor.tabSize": 2,
   "editor.insertSpaces": false,
-  "editor.lineNumbers": "relative",
   "extensions.ignoreRecommendations": true,
   "editor.inlineSuggest.showToolbar": "always",
-  "svelte.enable-ts-plugin": true,
+  "editor.gotoLocation.multipleDefinitions": "goto",
+  "editor.gotoLocation.alternativeDefinitionCommand": "editor.action.goToImplementation",
+  "editor.lineNumbers": "relative",
+  "vscode_custom_css.imports": [
+    "file:///c:/Users/joaki/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js"
+  ],
+  "animations.Enabled": true,
+  "editor.largeFileOptimizations": false,
+  "explorer.fileNesting.patterns": {
+    "*.ts": "${capture}.js",
+    "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
+    "*.jsx": "${capture}.js",
+    "*.tsx": "${capture}.ts",
+    "tsconfig.json": "tsconfig.*.json",
+    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb, bun.lock",
+    "*.sqlite": "${capture}.${extname}-*",
+    "*.db": "${capture}.${extname}-*",
+    "*.sqlite3": "${capture}.${extname}-*",
+    "*.db3": "${capture}.${extname}-*",
+    "*.sdb": "${capture}.${extname}-*",
+    "*.s3db": "${capture}.${extname}-*"
+  },
   // Theme
   "workbench.iconTheme": "material-icon-theme",
-  "workbench.colorTheme": "Dracula Theme",
+  "workbench.colorTheme": "Bearded Theme Monokai Terra",
+  "terminal.integrated.fontFamily": "MesloLGS NF",
+  // Sveltekit
+  "svelte.enable-ts-plugin": true,
+  "workbench.editor.customLabels.patterns": {
+    "*/src/**/+layout.server.ts": "[LS] ${dirname}",
+    "*/src/**/+page.server.ts": "[PS] ${dirname}",
+    "*/src/**/+page.svelte": "[P] ${dirname}",
+    "*/src/**/+layout.svelte": "[L] ${dirname}",
+    "*/src/**/+server.ts": "[S] ${dirname}",
+    "*/src/**/+page.ts": "[p] ${dirname}",
+    "*/src/**/+layout.ts": "[l] ${dirname}"
+  },
+  // Prettier
+  "prettier.printWidth": 100,
   // CoPilot
+  "github.copilot.nextEditSuggestions.enabled": true,
   "github.copilot.enable": {
     "*": true,
     "plaintext": false,
@@ -28,115 +64,38 @@
   "vim.smartcase": true,
   "vim.useSystemClipboard": true,
   "vim.leader": " ",
-  "vim.normalModeKeyBindingsNonRecursive": [
-    {
-      "before": ["<C-h>"],
-      "commands": ["workbench.action.navigateLeft"]
-    },
-    {
-      "before": ["<C-j>"],
-      "commands": ["workbench.action.navigateDown"]
-    },
-    {
-      "before": ["<C-k>"],
-      "commands": ["workbench.action.navigateUp"]
-    },
-    {
-      "before": ["<C-l>"],
-      "commands": ["workbench.action.navigateRight"]
-    }
-  ],
-  "vim.normalModeKeyBindings": [
-    // Window management
-    {
-      "before": ["<leader>", "s", "v"],
-      "commands": ["workbench.action.splitEditorRight"]
-    },
-    {
-      "before": ["<leader>", "s", "h"],
-      "commands": ["workbench.action.splitEditorDown"]
-    },
-    {
-      "before": ["<leader>", "s", "x"],
-      "commands": ["workbench.action.closeActiveEditor"]
-    },
-    {
-      "before": ["<leader>", "s", "m"],
-      "commands": ["workbench.action.toggleEditorWidths"]
-    },
-    {
-      "before": ["<leader>", "s", "d"],
-      "commands": ["markdown.showPreview"],
-      "when": "!notebookEditorFocused && editorLangId == 'markdownd'"
-    },
-    // Terminal management
-    {
-      "before": ["<leader>", "t", "t"],
-      "commands": ["workbench.action.terminal.toggleTerminal"]
-    },
-    {
-      "before": ["<leader>", "t", "n"],
-      "commands": ["workbench.action.terminal.new"]
-    },
-    {
-      "before": ["<leader>", "t", "x"],
-      "commands": ["workbench.action.terminal.kill"]
-    },
-    {
-      "before": ["<leader>", "t", "s"],
-      "commands": ["workbench.action.terminal.split"]
-    },
-    // Explorer
-    {
-      "before": ["<leader>", "e", "f"],
-      "commands": ["workbench.action.focusSideBar"]
-    },
-    {
-      "before": ["<leader>", "e", "e"],
-      "commands": ["workbench.action.toggleSidebarVisibility"]
-    },
-    // Tabbing
-    {
-      "before": ["<Tab>"],
-      "commands": ["workbench.action.nextEditorInGroup"]
-    },
-    {
-      "before": ["<S-Tab>"],
-      "commands": ["workbench.action.previousEditorInGroup"]
-    },
-    // Command pallet
-    {
-      "before": ["<leader>", "f", "f"],
-      "commands": ["workbench.action.quickOpen"]
-    },
-    {
-      "before": ["<leader>", "f", "c"],
-      "commands": ["workbench.action.showCommands"]
-    },
-    // Project management
-    {
-      "before": ["<leader>", "n", "n"],
-      "commands": ["workbench.action.newWindow"]
-    },
-    {
-      "before": ["<leader>", "n", "o"],
-      "commands": ["workbench.action.files.openFolder"]
-    },
-    {
-      "before": ["<leader>", "n", "x"],
-      "commands": ["workbench.action.closeWindow"]
-    }
-  ],
   "editor.fontSize": 14,
-  "workbench.editor.customLabels.patterns": {
-    "*/src/**/+layout.server.ts": "[LS] ${dirname}",
-    "*/src/**/+page.server.ts": "[PS] ${dirname}",
-    "*/src/**/+page.svelte": "[P] ${dirname}",
-    "*/src/**/+layout.svelte": "[L] ${dirname}",
-    "*/src/**/+server.ts": "[S] ${dirname}",
-    "*/src/**/+page.ts": "[p] ${dirname}",
-    "*/src/**/+layout.ts": "[l] ${dirname}"
+  "[python]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": false,
+    "editor.defaultFormatter": "charliermarsh.ruff"
   },
-  "workbench.sideBar.location": "right",
-  "terminal.integrated.env.windows": {}
+  "explorer.compactFolders": false,
+  "python.analysis.extraPaths": ["${workspaceFolder}/.venv/**"],
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[dockercompose]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "advanced",
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[github-actions-workflow]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "git.confirmSync": false,
+  "git.suggestSmartCommit": false,
+  "chat.mcp.serverSampling": {
+    "Global in Code: todo": {
+      "allowedModels": ["copilot/gpt-4.1"]
+    }
+  },
+  "chat.mcp.autostart": "never",
+  "[bicep]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-bicep"
+  }
 }
