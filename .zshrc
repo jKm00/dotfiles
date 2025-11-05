@@ -47,5 +47,3 @@ export NVM_DIR="$HOME/.nvm"
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home
 export PATH=$JAVA_HOME/bin:$PATH
 export PGUSER=postgres
-
-. "$HOME/.local/bin/env"
