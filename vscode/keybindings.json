@@ -151,6 +151,26 @@
     }
   },
   {
+    "key": "space s h",
+    "command": "workbench.action.splitEditorRight",
+    "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus)"
+  },
+  {
+    "key": "space s v",
+    "command": "workbench.action.splitEditorDown",
+    "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus)"
+  },
+  {
+    "key": "space s e",
+    "command": "workbench.action.evenEditorWidths",
+    "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus)"
+  },
+  {
+    "key": "space s x",
+    "command": "workbench.action.closeActiveEditor",
+    "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus)"
+  },
+  {
     "key": "alt+h",
     "command": "workbench.action.increaseViewWidth",
     "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus)"
