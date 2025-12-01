@@ -61,6 +61,9 @@ brew install neovim
 # CLI Tools
 brew install lazygit
 brew install spotify_player
+
+# Python venv stuff
+brew install pylint
 ```
 
 ### Installation
