@@ -2,7 +2,6 @@
   // General
   "workbench.startupEditor": "none",
   "explorer.sortOrder": "filesFirst",
-  "workbench.sideBar.location": "right",
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "editor.defaultFormatter": "charliermarsh.ruff",
@@ -97,5 +96,20 @@
   "chat.mcp.autostart": "never",
   "[bicep]": {
     "editor.defaultFormatter": "ms-azuretools.vscode-bicep"
+  },
+  "[terraform]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "hashicorp.terraform",
+    "editor.tabSize": 2 // optionally
+  },
+  "[terraform-vars]": {
+    "editor.tabSize": 2 // optionally
+  },
+  "workbench.sideBar.location": "right",
+  "[svelte]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

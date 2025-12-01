@@ -47,3 +47,11 @@ export NVM_DIR="$HOME/.nvm"
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home
 export PATH=$JAVA_HOME/bin:$PATH
 export PGUSER=postgres
+
+# pnpm
+export PNPM_HOME="/Users/joakimedvardsen/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

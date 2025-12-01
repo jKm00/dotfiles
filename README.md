@@ -41,7 +41,6 @@ This repository contains my personal configuration files for a streamlined and e
 | **[lazygit](https://github.com/jesseduffield/lazygit)** | Simple terminal UI for Git operations |
 | **[spotify_player](https://github.com/aome510/spotify-player)** | Spotify client for the terminal |
 
-
 ---
 
 ## 🚀 Quick Start
