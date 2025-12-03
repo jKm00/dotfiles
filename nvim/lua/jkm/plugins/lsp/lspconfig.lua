@@ -102,6 +102,14 @@ return {
 			filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
 		})
 
+		vim.lsp.config("bicep", {
+			filetypes = { "bicep" },
+			root_dir = function(fname)
+				return vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
+			end,
+			init_options = {},
+		})
+
 		vim.lsp.config("lua_ls", {
 			settings = {
 				Lua = {

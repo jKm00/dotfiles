@@ -2,13 +2,13 @@ return {
 	"linux-cultist/venv-selector.nvim",
 	dependencies = {
 		"neovim/nvim-lspconfig",
-		"nvim-telescope/telescope.nvim", -- or another picker
+		{ "nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = { "nvim-lua/plenary.nvim" } }, -- optional: you can also use fzf-lua, snacks, mini-pick instead.
 	},
-	opts = {
-		name = ".venv", -- default name of your venv folder
-		auto_refresh = true,
+	ft = "python", -- Load when opening Python files
+	opts = { -- this can be an empty lua table - just showing below for clarity.
+		search = {}, -- if you add your own searches, they go here.
+		options = {}, -- if you add plugin options, they go here.
 	},
-	cmd = { "VenvSelect", "VenvSelectCached" },
 	keys = {
 		{ "<leader>vs", "<cmd>VenvSelect<cr>" },
 		{ "<leader>vc", "<cmd>VenvSelectCached<cr>" },

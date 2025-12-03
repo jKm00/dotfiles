@@ -5,6 +5,10 @@ return {
 		local lint = require("lint")
 
 		lint.linters_by_ft = {
+			javascript = { "eslint_d" },
+			typescript = { "eslint_d" },
+			javascriptreact = { "eslint_d" },
+			typescriptreact = { "esling_d" },
 			python = { "pylint" },
 		}
 
@@ -18,6 +22,17 @@ return {
 				type = "file",
 			})[1]
 		end
+
+		local venv_path =
+			'import sys; sys.path.append("/usr/lib/python3.11/site-packages"); import pylint_venv; pylint_venv.inithook(force_venv_activation=True, quiet=True)'
+
+		local pylint = lint.linters.pylint
+		pylint.args = {
+			"-f",
+			"json",
+			"--init-hook",
+			venv_path,
+		}
 
 		local function remove_linter(linters, linter_name)
 			for k, v in pairs(linters) do

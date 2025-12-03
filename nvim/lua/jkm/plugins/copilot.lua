@@ -14,7 +14,7 @@ return {
 			end,
 		})
 
-		vim.keymap.set("i", "<C-a>", 'copilot#Accept("\\<CR>")', {
+		vim.keymap.set("i", "<C-f>", 'copilot#Accept("\\<CR>")', {
 			expr = true,
 			replace_keycodes = false,
 		})

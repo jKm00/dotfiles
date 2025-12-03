@@ -3,6 +3,7 @@
   "workbench.startupEditor": "none",
   "explorer.sortOrder": "filesFirst",
   "editor.formatOnSave": true,
+  "workbench.sideBar.location": "right",
   "editor.formatOnPaste": true,
   "editor.defaultFormatter": "charliermarsh.ruff",
   "editor.tabSize": 2,
@@ -112,4 +113,8 @@
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
+  "github-enterprise.uri": "https://dnb.ghe.com",
+  "github.copilot.advanced": {
+    "authProvider": "github-enterprise"
+  },
 }
