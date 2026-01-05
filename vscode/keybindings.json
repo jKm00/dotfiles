@@ -51,12 +51,12 @@
     "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus)"
   },
   {
-    "key": "space ,",
+    "key": "space f b",
     "command": "workbench.action.showAllEditors",
     "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus)"
   },
   {
-    "key": "space o",
+    "key": "space f a",
     "command": "workbench.action.gotoSymbol",
     "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus)"
   },
@@ -156,12 +156,12 @@
     }
   },
   {
-    "key": "space s h",
+    "key": "space s v",
     "command": "workbench.action.splitEditorRight",
     "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus)"
   },
   {
-    "key": "space s v",
+    "key": "space s h",
     "command": "workbench.action.splitEditorDown",
     "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus)"
   },
@@ -298,8 +298,13 @@
     "when": "vim.mode == 'Normal' && editorTextFocus"
   },
   {
-    "key": "space c s",
-    "command": "workbench.action.gotoSymbol",
+    "key": "space g r",
+    "command": "editor.action.goToReferences",
+    "when": "vim.mode == 'Normal' && editorTextFocus"
+  },
+  {
+    "key": "space g i",
+    "command": "editor.action.goToImplementation",
     "when": "vim.mode == 'Normal' && editorTextFocus"
   },
   {
@@ -308,8 +313,13 @@
     "when": "vim.mode == 'Normal' && editorTextFocus"
   },
   {
-    "key": "space g r",
-    "command": "editor.action.goToReferences",
+    "key": "space g D",
+    "command": "editor.action.goToDeclaration",
+    "when": "vim.mode == 'Normal' && editorTextFocus"
+  },
+  {
+    "key": "space g t",
+    "command": "editor.action.goToTypeDefinition",
     "when": "vim.mode == 'Normal' && editorTextFocus"
   },
   {
@@ -319,16 +329,16 @@
   },
   // Copilot
   {
-    "key": "ctrl-a",
+    "key": "ctrl-f",
     "command": "editor.action.inlineSuggest.commit",
     "when": "(vim.mode == 'Insert' || vim.mode == 'Normal') && editorTextFocus && inlineSuggestionVisible"
   },
   {
-    "key": "ctrl-m",
+    "key": "ctrl-c",
     "command": "workbench.panel.chat.view.copilot.focus"
   },
   {
-    "key": "space m",
+    "key": "space a c",
     "command": "workbench.action.chat.toggle",
     "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus)"
   },
