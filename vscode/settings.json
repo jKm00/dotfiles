@@ -34,7 +34,7 @@
   },
   // Theme
   "workbench.iconTheme": "material-icon-theme",
-  "workbench.colorTheme": "Bearded Theme Monokai Terra",
+  "workbench.colorTheme": "Tokyo Night Storm",
   "terminal.integrated.fontFamily": "MesloLGS NF",
   // Sveltekit
   "svelte.enable-ts-plugin": true,
