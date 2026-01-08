@@ -4,7 +4,7 @@
   "explorer.sortOrder": "filesFirst",
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
-  "editor.defaultFormatter": "charliermarsh.ruff",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.tabSize": 2,
   "editor.insertSpaces": false,
   "extensions.ignoreRecommendations": true,
