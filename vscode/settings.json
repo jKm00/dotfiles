@@ -6,7 +6,6 @@
   "editor.formatOnPaste": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.tabSize": 2,
-  "editor.insertSpaces": false,
   "extensions.ignoreRecommendations": true,
   "editor.inlineSuggest.showToolbar": "always",
   "editor.gotoLocation.multipleDefinitions": "goto",
@@ -63,10 +62,13 @@
   "vim.smartcase": true,
   "vim.useSystemClipboard": true,
   "vim.leader": " ",
-  "editor.fontSize": 14,
+  "terminal.integrated.fontSize": 12,
+  "chat.editor.fontSize": 12,
+  "markdown.preview.fontSize": 12,
+  "window.zoomLevel": 0.8,
   "[python]": {
-    "editor.tabSize": 2,
-    "editor.insertSpaces": false,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
     "editor.defaultFormatter": "charliermarsh.ruff"
   },
   "explorer.compactFolders": false,
@@ -105,7 +107,6 @@
   "[terraform-vars]": {
     "editor.tabSize": 2 // optionally
   },
-  "workbench.sideBar.location": "right",
   "[svelte]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -113,7 +114,9 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "github-enterprise.uri": "https://dnb.ghe.com",
-  "github.copilot.advanced": {
-    "authProvider": "github-enterprise"
-  }
+  "editor.insertSpaces": false,
+  "gitlens.ai.model": "vscode",
+  "gitlens.ai.vscode.model": "copilot:gpt-4.1",
+  "chat.viewSessions.orientation": "stacked",
+  "chat.tools.terminal.enableAutoApprove": true
 }
