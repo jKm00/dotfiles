@@ -12,7 +12,7 @@
   "editor.gotoLocation.alternativeDefinitionCommand": "editor.action.goToImplementation",
   "editor.lineNumbers": "relative",
   "vscode_custom_css.imports": [
-    "file:///c:/Users/joaki/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js"
+    "file:///c:/Users/joaki/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js",
   ],
   "animations.Enabled": true,
   "editor.largeFileOptimizations": false,
@@ -28,7 +28,7 @@
     "*.sqlite3": "${capture}.${extname}-*",
     "*.db3": "${capture}.${extname}-*",
     "*.sdb": "${capture}.${extname}-*",
-    "*.s3db": "${capture}.${extname}-*"
+    "*.s3db": "${capture}.${extname}-*",
   },
   // Theme
   "workbench.iconTheme": "material-icon-theme",
@@ -43,7 +43,7 @@
     "*/src/**/+layout.svelte": "[L] ${dirname}",
     "*/src/**/+server.ts": "[S] ${dirname}",
     "*/src/**/+page.ts": "[p] ${dirname}",
-    "*/src/**/+layout.ts": "[l] ${dirname}"
+    "*/src/**/+layout.ts": "[l] ${dirname}",
   },
   // Prettier
   "prettier.printWidth": 100,
@@ -54,7 +54,7 @@
     "plaintext": false,
     "markdown": false,
     "scminput": false,
-    "go": false
+    "go": false,
   },
   // Vim
   "vim.easymotion": true,
@@ -65,59 +65,60 @@
   "terminal.integrated.fontSize": 12,
   "chat.editor.fontSize": 12,
   "markdown.preview.fontSize": 12,
-  "window.zoomLevel": 0.8,
+  "window.zoomLevel": 0.5,
   "[python]": {
     "editor.tabSize": 4,
     "editor.insertSpaces": true,
-    "editor.defaultFormatter": "charliermarsh.ruff"
+    "editor.defaultFormatter": "charliermarsh.ruff",
   },
   "explorer.compactFolders": false,
   "python.analysis.extraPaths": ["${workspaceFolder}/.venv/**"],
   "[yaml]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[dockercompose]": {
     "editor.insertSpaces": true,
     "editor.tabSize": 2,
     "editor.autoIndent": "advanced",
-    "editor.defaultFormatter": "redhat.vscode-yaml"
+    "editor.defaultFormatter": "redhat.vscode-yaml",
   },
   "[github-actions-workflow]": {
-    "editor.defaultFormatter": "redhat.vscode-yaml"
+    "editor.defaultFormatter": "redhat.vscode-yaml",
   },
   "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "git.confirmSync": false,
   "git.suggestSmartCommit": false,
   "chat.mcp.serverSampling": {
     "Global in Code: todo": {
-      "allowedModels": ["copilot/gpt-4.1"]
-    }
+      "allowedModels": ["copilot/gpt-4.1"],
+    },
   },
   "chat.mcp.autostart": "never",
   "[bicep]": {
-    "editor.defaultFormatter": "ms-azuretools.vscode-bicep"
+    "editor.defaultFormatter": "ms-azuretools.vscode-bicep",
   },
   "[terraform]": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "hashicorp.terraform",
-    "editor.tabSize": 2 // optionally
+    "editor.tabSize": 2, // optionally
   },
   "[terraform-vars]": {
-    "editor.tabSize": 2 // optionally
+    "editor.tabSize": 2, // optionally
   },
   "[svelte]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
-  "github-enterprise.uri": "https://dnb.ghe.com",
+  // "github-enterprise.uri": "https://dnb.ghe.com",
   "editor.insertSpaces": false,
   "gitlens.ai.model": "vscode",
   "gitlens.ai.vscode.model": "copilot:gpt-4.1",
   "chat.viewSessions.orientation": "stacked",
   "chat.tools.terminal.enableAutoApprove": true,
-  "workbench.sideBar.location": "right"
+  "workbench.sideBar.location": "right",
+  "editor.accessibilitySupport": "off",
 }
