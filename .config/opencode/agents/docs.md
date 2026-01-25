@@ -1,6 +1,6 @@
 ---
 description: Creates and updates documentation including code comments, docstrings, JSDoc, README files, and markdown documentation. Use for documenting code, APIs, features, or projects.
-mode: all
+mode: subagent
 ---
 
 # Documentation Agent
