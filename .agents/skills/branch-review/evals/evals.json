@@ -1,0 +1,52 @@
+{
+  "skill_name": "branch-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review my branch before I create a PR. I'm in /tmp/branch-review-tests/test-repo-1 on the feature/add-search-endpoint branch.",
+      "expected_output": "File-by-file review that catches: SQL injection in search endpoint, hardcoded API key, storing plaintext passwords, no input validation on create, no confirmation on delete, debug mode enabled, missing tests for new endpoints. Should be constructive with suggestions.",
+      "files": [],
+      "expectations": [
+        "The review identifies the SQL injection vulnerability in the search endpoint",
+        "The review flags the hardcoded API key (sk-prod-abc123secret456)",
+        "The review mentions that passwords are stored in plaintext without hashing",
+        "The review notes missing input validation on the create_user endpoint",
+        "The review notes that debug=True is set in the production code",
+        "The review mentions that no tests were added for the new endpoints",
+        "The review is organized file-by-file",
+        "Each finding includes a concrete suggestion or fix",
+        "The review uses severity levels (critical, suggestion, nit, or similar)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Can you look at what I've done on this branch and let me know if it's ready? I'm in /tmp/branch-review-tests/test-repo-2 on the feature/user-settings branch.",
+      "expected_output": "File-by-file review catching: direct state mutation (settings.theme = theme instead of spread), missing error handling on fetch, no loading/error states for save, delete endpoint using token as user ID, no confirmation dialog on account deletion, missing dependency array entry for token in useEffect. Constructive tone.",
+      "files": [],
+      "expectations": [
+        "The review identifies direct state mutation (settings.theme = theme instead of using spread/setState correctly)",
+        "The review flags missing error handling on the initial fetch call",
+        "The review notes the delete endpoint incorrectly uses the auth token as a user ID in the URL",
+        "The review mentions there is no confirmation dialog before account deletion",
+        "The review notes that token should be in the useEffect dependency array",
+        "The review is organized file-by-file",
+        "Each finding includes a concrete suggestion or fix"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Review my changes before I open a PR. I'm working in /tmp/branch-review-tests/test-repo-3 on feature/task-crud. The base branch is dev.",
+      "expected_output": "File-by-file review catching: UpdateTask and DeleteTask not using mutex (race condition), no input validation on create/update, no status value validation, delete returns 204 even if task doesn't exist, decode errors not checked, no tests. Constructive.",
+      "files": [],
+      "expectations": [
+        "The review identifies that UpdateTask reads/writes tasks without holding the mutex lock",
+        "The review identifies that DeleteTask accesses the map without holding the mutex lock",
+        "The review notes that json.Decoder errors are not checked",
+        "The review mentions missing input validation (empty title, invalid status values)",
+        "The review notes that no tests were added",
+        "The review is organized file-by-file",
+        "Each finding includes a concrete suggestion or fix"
+      ]
+    }
+  ]
+}

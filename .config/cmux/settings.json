@@ -1,0 +1,198 @@
+{
+  "$schema": "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/data/cmux-settings.schema.json",
+  "schemaVersion": 1,
+
+  // Full tmux-style config. ALL shortcuts behind ctrl+b prefix.
+  // C-h/j/k/l and Alt-h/j/k/l pass through to nvim untouched.
+
+  "app": {
+    "appearance": "dark",
+    "newWorkspacePlacement": "afterCurrent",
+    "focusPaneOnFirstClick": true,
+    "warnBeforeQuit": true,
+    "minimalMode": false
+  },
+
+  "terminal": {
+    "showScrollBar": false
+  },
+
+  "sidebar": {
+    "branchLayout": "vertical",
+    "hideAllDetails": false,
+    "showBranchDirectory": true,
+    "showPullRequests": true,
+    "showPorts": true,
+    "showLog": true,
+    "showProgress": true,
+    "showNotificationMessage": true,
+    "showCustomMetadata": true,
+    "showSSH": true,
+    "openPortLinksInCmuxBrowser": true,
+    "openPullRequestLinksInCmuxBrowser": true
+  },
+
+  "browser": {
+    "defaultSearchEngine": "google",
+    "openTerminalLinksInCmuxBrowser": true,
+    "interceptTerminalOpenCommandInCmuxBrowser": true,
+    "showSearchSuggestions": true,
+    "theme": "system",
+    "insecureHttpHostsAllowedInEmbeddedBrowser": [
+      "localhost",
+      "127.0.0.1",
+      "::1",
+      "0.0.0.0",
+      "*.localtest.me"
+    ]
+  },
+
+  "notifications": {
+    "dockBadge": true,
+    "showInMenuBar": true,
+    "unreadPaneRing": true,
+    "paneFlash": true,
+    "sound": "default"
+  },
+
+  "shortcuts": {
+    "showModifierHoldHints": true,
+    "bindings": {
+
+      // ═══════════════════════════════════════
+      //  APP
+      // ═══════════════════════════════════════
+      // prefix + ,        → settings (tmux: prefix+, = rename)
+      "openSettings": ["ctrl+b", ","],
+      // prefix + shift+,  → reload config (tmux: prefix+r)
+      "reloadConfiguration": ["ctrl+b", "r"],
+      // prefix + :        → command palette (tmux: prefix+: = command prompt)
+      "commandPalette": ["ctrl+b", "shift+;"],
+      // prefix + shift+n  → new window
+      "newWindow": ["ctrl+b", "shift+n"],
+      // prefix + shift+&  → close window
+      "closeWindow": ["ctrl+b", "shift+7"],
+      // prefix + f        → toggle full screen
+      "toggleFullScreen": ["ctrl+b", "shift+f"],
+      // prefix + q        → quit
+      "quit": ["ctrl+b", "shift+q"],
+
+      // ═══════════════════════════════════════
+      //  WORKSPACES (tmux "windows")
+      // ═══════════════════════════════════════
+      // prefix + e  → toggle sidebar (nvim: <leader>e = file explorer)
+      "toggleSidebar": ["ctrl+b", "e"],
+      // prefix + C  → new workspace (tmux: prefix+c = new window)
+      "newTab": ["ctrl+b", "c"],
+      // prefix + o  → open folder
+      "openFolder": ["ctrl+b", "o"],
+      // prefix + w  → workspace switcher (tmux: prefix+w = choose window)
+      "goToWorkspace": ["ctrl+b", "w"],
+      // prefix + n  → next workspace (tmux: prefix+n)
+      "nextSidebarTab": ["ctrl+b", "n"],
+      // prefix + p  → prev workspace (tmux: prefix+p)
+      "prevSidebarTab": ["ctrl+b", "p"],
+      // prefix + 1-9 → select workspace (tmux: prefix+0-9)
+      "selectWorkspaceByNumber": ["ctrl+b", "1"],
+      // prefix + .  → rename workspace (tmux: prefix+, but , taken by settings)
+      "renameWorkspace": ["ctrl+b", "."],
+      // prefix + &  → close workspace (tmux: prefix+& = kill window)
+      "closeWorkspace": ["ctrl+b", "shift+x"],
+
+      // ═══════════════════════════════════════
+      //  SURFACES / TABS (cmux extra)
+      // ═══════════════════════════════════════
+      // prefix + t  → new surface/tab
+      "newSurface": ["ctrl+b", "t"],
+      // prefix + ]  → next surface
+      "nextSurface": ["ctrl+b", "]"],
+      // prefix + [  → prev surface
+      "prevSurface": ["ctrl+b", "["],
+      // prefix + ctrl+1-9 → select surface by number
+      "selectSurfaceByNumber": ["ctrl+b", "shift+1"],
+      // prefix + shift+.  → rename tab
+      "renameTab": ["ctrl+b", "shift+."],
+      // prefix + x  → close tab/pane (tmux: prefix+x = kill pane)
+      "closeTab": ["ctrl+b", "x"],
+      // prefix + shift+t → close other tabs
+      "closeOtherTabsInPane": ["ctrl+b", "shift+t"],
+      // prefix + shift+r → reopen closed browser panel
+      "reopenClosedBrowserPanel": ["ctrl+b", "shift+o"],
+      // prefix + Escape → copy mode (tmux: prefix+[ or prefix+Escape)
+      "toggleTerminalCopyMode": ["ctrl+b", "escape"],
+
+      // ═══════════════════════════════════════
+      //  SPLIT PANES
+      // ═══════════════════════════════════════
+      // prefix + v → split right (vertical divider)
+      "splitRight": ["ctrl+b", "v"],
+      // prefix + h → split down (horizontal divider)
+      "splitDown": ["ctrl+b", "h"],
+      // prefix + shift+v → browser split right
+      "splitBrowserRight": ["ctrl+b", "shift+v"],
+      // prefix + shift+h → browser split down
+      "splitBrowserDown": ["ctrl+b", "shift+h"],
+      // prefix + z → toggle pane zoom (tmux: prefix+z)
+      "toggleSplitZoom": ["ctrl+b", "z"],
+
+      // ═══════════════════════════════════════
+      //  PANE FOCUS
+      // ═══════════════════════════════════════
+      // Shift+h/j/k/l → focus pane
+      "focusLeft": "shift+h",
+      "focusRight": "shift+l",
+      "focusUp": "shift+k",
+      "focusDown": "shift+j",
+
+      // ═══════════════════════════════════════
+      //  BROWSER (cmux extra)
+      // ═══════════════════════════════════════
+      // prefix + b → open browser
+      "openBrowser": ["ctrl+b", "b"],
+      // prefix + l → focus address bar
+      "focusBrowserAddressBar": ["ctrl+b", "l"],
+      // prefix + shift+[ → browser back
+      "browserBack": ["ctrl+b", "shift+["],
+      // prefix + shift+] → browser forward
+      "browserForward": ["ctrl+b", "shift+]"],
+      // prefix + shift+r → browser reload (r taken by config reload)
+      "browserReload": ["ctrl+b", "shift+r"],
+      // prefix + = → zoom in
+      "browserZoomIn": ["ctrl+b", "="],
+      // prefix + - → zoom out
+      "browserZoomOut": ["ctrl+b", "-"],
+      // prefix + 0 → zoom reset
+      "browserZoomReset": ["ctrl+b", "0"],
+      // prefix + shift+i → dev tools
+      "toggleBrowserDeveloperTools": ["ctrl+b", "shift+i"],
+      // prefix + shift+c → JS console
+      "showBrowserJavaScriptConsole": ["ctrl+b", "shift+c"],
+      // prefix + g → react grab
+      "toggleReactGrab": ["ctrl+b", "g"],
+
+      // ═══════════════════════════════════════
+      //  FIND
+      // ═══════════════════════════════════════
+      // prefix + f → find
+      "find": ["ctrl+b", "f"],
+      // prefix + shift+g → find next
+      "findNext": ["ctrl+b", "shift+g"],
+      // prefix + shift+p → find previous
+      "findPrevious": ["ctrl+b", "shift+p"],
+      // prefix + shift+f → hide find
+      "hideFind": ["ctrl+b", "shift+f"],
+      // prefix + shift+e → use selection for find
+      "useSelectionForFind": ["ctrl+b", "shift+e"],
+
+      // ═══════════════════════════════════════
+      //  NOTIFICATIONS (cmux extra)
+      // ═══════════════════════════════════════
+      // prefix + i → show notifications
+      "showNotifications": ["ctrl+b", "i"],
+      // prefix + u → jump to unread
+      "jumpToUnread": ["ctrl+b", "u"],
+      // prefix + shift+h → flash pane
+      "triggerFlash": ["ctrl+b", "shift+h"]
+    }
+  }
+}
