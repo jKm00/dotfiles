@@ -22,10 +22,6 @@ autoload bashcompinit && bashcompinit
 autoload -Uz compinit && compinit
 complete -C `which aws_completer` aws
 
-# Aliases
-alias gg="lazygit"
-alias sp="spotify_player"
-
 # Tree commands
 if [ -x "$(command -v eza)" ]; then
     alias l="eza --group-directories-first"
@@ -66,6 +62,9 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # opencode
 export PATH=/Users/joakimedvardsen/.opencode/bin:$PATH
 
+# Aliases
+alias gg="lazygit"
+alias sp="spotify_player"
 alias oc="opencode"
 alias jarvis="opencode"
 
