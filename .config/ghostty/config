@@ -1,3 +1,11 @@
 font-family = DankMono Nerd Font
-font-size = 14
+font-size = 16
+font-thicken = true
 theme = tokyonight
+
+# Treat the left Option key as Alt/Meta so tmux receives M-h/j/k/l, etc.
+macos-option-as-alt = left
+
+# Keybinds
+keybind = cmd+shift+f>1=set_font_size:14
+keybind = cmd+shift+f>2=set_font_size:16
