@@ -170,6 +170,16 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+-- Automatically reload files that have been changed outside of Neovim
+-- (e.g. by another tool/agent), as long as the buffer has no unsaved changes.
+-- See `:help 'autoread'`
+vim.o.autoread = true
+
+-- How long (ms) the cursor must be idle before CursorHold fires. Lower values
+-- make the external-change reload (and LSP hover/diagnostics) feel snappier.
+-- See `:help 'updatetime'`
+vim.o.updatetime = 250
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -227,6 +237,29 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
 	callback = function()
 		vim.hl.on_yank()
+	end,
+})
+
+-- Check for external file changes and reload the buffer automatically.
+-- `autoread` only reloads when Neovim notices a change; these events make it
+-- check at useful moments (regaining focus, entering a buffer, idle cursor),
+-- so edits made by other tools/agents show up without manually reopening.
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "WinEnter", "CursorHold", "CursorHoldI", "TermClose", "TermLeave" }, {
+	desc = "Reload buffer if the file changed on disk",
+	group = vim.api.nvim_create_augroup("auto-checktime", { clear = true }),
+	callback = function()
+		if vim.fn.mode() ~= "c" and vim.fn.getcmdwintype() == "" then
+			vim.cmd("checktime")
+		end
+	end,
+})
+
+-- Notify when a file is reloaded due to an external change.
+vim.api.nvim_create_autocmd("FileChangedShellPost", {
+	desc = "Notify when a file was changed on disk and reloaded",
+	group = vim.api.nvim_create_augroup("auto-checktime-notify", { clear = true }),
+	callback = function()
+		vim.notify("File changed on disk. Buffer reloaded.", vim.log.levels.WARN)
 	end,
 })
 
@@ -703,7 +736,7 @@ require("lazy").setup({
 			local servers = {
 				-- clangd = {},
 				gopls = {},
-				pyright = {},
+				basedpyright = {},
 				bicep = {},
 				-- rust_analyzer = {},
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
