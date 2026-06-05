@@ -4,14 +4,15 @@
 
 ## Configurations
 
-| Name             | Description                          | Status |
-| ---------------- | ------------------------------------ | ------ |
-| kitty            | Terminal config                      | ✅     |
-| nvim             | Personal neovim config               |        |
-| nvim_kickstarter | Customized neovim kickstarter config | ✅     |
-| tmux             | Terminal multiplexer config          | ✅     |
-| vscode           | VSCode settings and extensions       |        |
-| zsh              | Zsh shell config                     | ✅     |
+| Name    | Description                    | Status |
+| ------- | ------------------------------ | ------ |
+| ghostly | Terminal config                | ✅     |
+| kitty   | Terminal config                |        |
+| cmux    | Terminal config                |        |
+| nvim    | Personal neovim config         | ✅     |
+| tmux    | Terminal multiplexer config    | ✅     |
+| vscode  | VSCode settings and extensions |        |
+| zsh     | Zsh shell config               | ✅     |
 
 ## Installation
 
@@ -25,5 +26,5 @@ brew install neovim
 # VS Code: Download from https://code.visualstudio.com/
 
 # CLI Tools
-brew install lazygit spotify_player
+brew install lazygit
 ```
