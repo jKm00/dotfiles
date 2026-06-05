@@ -67,3 +67,8 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH=/Users/joakimedvardsen/.opencode/bin:$PATH
 
 alias oc="opencode"
+alias jarvis="opencode"
+
+# Utils commands
+whoisonport() { sudo lsof -i :"$1" } # whoisonport 3000
+killport() { sudo kill -9 $(sudo lsof -t -i :"$1") } # killport 3000
