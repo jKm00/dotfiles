@@ -187,8 +187,8 @@ vim.o.updatetime = 250
 --  See `:help hlsearch`
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
-vim.keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })
-vim.keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
+vim.keymap.set("n", "<leader>sv", "<C-w>s", { desc = "Split window horizontally" })
+vim.keymap.set("n", "<leader>sh", "<C-w>v", { desc = "Split window vertically" })
 vim.keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })
 vim.keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" })
 vim.keymap.set("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Close buffer" })
@@ -244,15 +244,18 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- `autoread` only reloads when Neovim notices a change; these events make it
 -- check at useful moments (regaining focus, entering a buffer, idle cursor),
 -- so edits made by other tools/agents show up without manually reopening.
-vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "WinEnter", "CursorHold", "CursorHoldI", "TermClose", "TermLeave" }, {
-	desc = "Reload buffer if the file changed on disk",
-	group = vim.api.nvim_create_augroup("auto-checktime", { clear = true }),
-	callback = function()
-		if vim.fn.mode() ~= "c" and vim.fn.getcmdwintype() == "" then
-			vim.cmd("checktime")
-		end
-	end,
-})
+vim.api.nvim_create_autocmd(
+	{ "FocusGained", "BufEnter", "WinEnter", "CursorHold", "CursorHoldI", "TermClose", "TermLeave" },
+	{
+		desc = "Reload buffer if the file changed on disk",
+		group = vim.api.nvim_create_augroup("auto-checktime", { clear = true }),
+		callback = function()
+			if vim.fn.mode() ~= "c" and vim.fn.getcmdwintype() == "" then
+				vim.cmd("checktime")
+			end
+		end,
+	}
+)
 
 -- Notify when a file is reloaded due to an external change.
 vim.api.nvim_create_autocmd("FileChangedShellPost", {
