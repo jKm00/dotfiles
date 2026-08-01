@@ -1,8 +1,4 @@
 {
   "$schema": "https://opencode.ai/tui.json",
-  "theme": "tokyonight",
-  "keybinds": [
-    "leader": "ctrl+x",
-    "input_newline": "ctrl+return,ctrl+j"
-  ]
+  "theme": "oasis-twilight-transparent"
 }

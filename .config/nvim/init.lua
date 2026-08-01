@@ -154,7 +154,7 @@ vim.o.splitbelow = true
 --   See `:help lua-options`
 --   and `:help lua-options-guide`
 vim.o.list = true
-vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+vim.opt.listchars = { tab = "  ", trail = "·", nbsp = "␣" }
 
 -- Preview substitutions live, as you type!
 vim.o.inccommand = "split"
@@ -989,25 +989,49 @@ require("lazy").setup({
 		},
 	},
 
-	{ -- You can easily change to a different colorscheme.
-		-- Change the name of the colorscheme plugin below, and then
-		-- change the command in the config to whatever the name of that colorscheme is.
-		--
-		-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-		"folke/tokyonight.nvim",
+	{
+		"uhs-robert/oasis.nvim",
 		priority = 1000, -- Make sure to load this before all the other start plugins.
 		config = function()
-			---@diagnostic disable-next-line: missing-fields
-			require("tokyonight").setup({
+			require("oasis").setup({
+				style = "twilight",
+				transparent = true,
 				styles = {
-					comments = { italic = false }, -- Disable italics in comments
+					italic = false,
 				},
 			})
 
-			-- Load the colorscheme here.
-			-- Like many other themes, this one has different styles, and you could load
-			-- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-			vim.cmd.colorscheme("tokyonight-night")
+			vim.cmd.colorscheme("oasis")
+
+			local transparent_groups = {
+				"Normal",
+				"NormalNC",
+				"NormalFloat",
+				"FloatBorder",
+				"SignColumn",
+				"LineNr",
+				"CursorLineNr",
+				"EndOfBuffer",
+				"StatusLine",
+				"StatusLineNC",
+				"NvimTreeNormal",
+				"NvimTreeNormalNC",
+				"NvimTreeEndOfBuffer",
+				"NvimTreeWinSeparator",
+				"NvimTreeStatusLine",
+				"NvimTreeStatusLineNC",
+				"NvimTreeCursorLine",
+			}
+
+			for _, group in ipairs(transparent_groups) do
+				local ok, highlight = pcall(vim.api.nvim_get_hl, 0, { name = group, link = false })
+				if not ok then
+					highlight = {}
+				end
+				highlight.bg = nil
+				highlight.ctermbg = nil
+				vim.api.nvim_set_hl(0, group, highlight)
+			end
 		end,
 	},
 

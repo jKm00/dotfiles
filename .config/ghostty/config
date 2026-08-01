@@ -1,10 +1,29 @@
+# Font
 font-family = DankMono Nerd Font
 font-size = 16
 font-thicken = true
+
+
+# Theme 
+background = #0b1020
+background-image = ~/.config/wallpapers/bg-blurred-darker.png
+# background-image = ~/.config/wallpapers/darkpink.png
+background-image-fit = cover
+background-image-position = center
+# background-image-opacity = 0.35
+background-image-opacity = 0.35
+
 theme = tokyonight
 
+# Shaders
+custom-shader = shaders/party_sparks.glsl
+custom-shader = shaders/cursor_smear.glsl
+custom-shader = shaders/cursor_twilight_frozen.glsl
+custom-shader = shaders/cursor_border_twilight_frosted.glsl
+custom-shader-animation = true
+
 # Treat the left Option key as Alt/Meta so tmux receives M-h/j/k/l, etc.
-macos-option-as-alt = left
+macos-option-as-alt = right
 
 # Keybinds
 keybind = cmd+shift+f>1=set_font_size:14

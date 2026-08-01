@@ -1,4 +1,4 @@
-# Enable Powerlevel10k instant prompt. 
+# Enable Powerlevel10k instant prompt.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -66,7 +66,7 @@ export PATH=/Users/joakimedvardsen/.opencode/bin:$PATH
 alias gg="lazygit"
 alias sp="spotify_player"
 alias oc="opencode"
-alias jarvis="opencode"
+alias jarvis="opencode --port"
 
 # Utils commands
 whoisonport() { sudo lsof -i :"$1" } # whoisonport 3000
