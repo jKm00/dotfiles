@@ -108,7 +108,7 @@
     taskwarrior             # taskwarrior task count (https://taskwarrior.org/)
     per_directory_history   # Oh My Zsh per-directory-history local/global indicator
     # cpu_arch              # CPU architecture
-    time                    # current time
+    oasis                   # theme marker
     # =========================[ Line #2 ]=========================
     newline
     # ip                    # ip address and bandwidth usage for a specified network interface
@@ -394,11 +394,11 @@
     fi
 
     # Styling for different parts of Git status.
-    local       meta='%7F' # white foreground
-    local      clean='%0F' # black foreground
-    local   modified='%0F' # black foreground
-    local  untracked='%0F' # black foreground
-    local conflicted='%1F' # red foreground
+    local       meta='%F{#261a32}' # dark purple foreground
+    local      clean='%F{#261a32}' # dark purple foreground
+    local   modified='%F{#261a32}' # dark purple foreground
+    local  untracked='%F{#261a32}' # dark purple foreground
+    local conflicted='%F{#261a32}' # dark purple foreground
 
     local res
 
@@ -1800,6 +1800,14 @@
     prompt_example
   }
 
+  function prompt_oasis() {
+    p10k segment -b '#f7997d' -f '#261a32' -t '✦'
+  }
+
+  function instant_prompt_oasis() {
+    prompt_oasis
+  }
+
   # User-defined prompt segments can be customized the same way as built-in segments.
   typeset -g POWERLEVEL9K_EXAMPLE_FOREGROUND=3
   typeset -g POWERLEVEL9K_EXAMPLE_BACKGROUND=1
@@ -1827,18 +1835,24 @@
   typeset -g POWERLEVEL9K_MULTILINE_FIRST_PROMPT_GAP_FOREGROUND=$oasis_surface
 
   typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=$oasis_mantle
-  typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=$oasis_secondary
+  typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=$oasis_primary
 
-  typeset -g POWERLEVEL9K_DIR_FOREGROUND=$oasis_text
+  typeset -g POWERLEVEL9K_DIR_FOREGROUND=$oasis_primary
   typeset -g POWERLEVEL9K_DIR_BACKGROUND=$oasis_surface
-  typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND=$oasis_muted
-  typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND=$oasis_secondary
+  typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND=$oasis_primary
+  typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND=$oasis_primary
 
   typeset -g POWERLEVEL9K_VCS_CLEAN_BACKGROUND=$oasis_secondary
-  typeset -g POWERLEVEL9K_VCS_MODIFIED_BACKGROUND=$oasis_primary
-  typeset -g POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND=$oasis_warning
+  typeset -g POWERLEVEL9K_VCS_CLEAN_FOREGROUND=$oasis_mantle
+  typeset -g POWERLEVEL9K_VCS_MODIFIED_BACKGROUND=$oasis_secondary
+  typeset -g POWERLEVEL9K_VCS_MODIFIED_FOREGROUND=$oasis_mantle
+  typeset -g POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND=$oasis_secondary
+  typeset -g POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND=$oasis_mantle
   typeset -g POWERLEVEL9K_VCS_CONFLICTED_BACKGROUND=$oasis_error
-  typeset -g POWERLEVEL9K_VCS_LOADING_BACKGROUND=$oasis_surface
+  typeset -g POWERLEVEL9K_VCS_CONFLICTED_FOREGROUND=$oasis_mantle
+  typeset -g POWERLEVEL9K_VCS_LOADING_BACKGROUND=$oasis_secondary
+  typeset -g POWERLEVEL9K_VCS_LOADING_FOREGROUND=$oasis_mantle
+  typeset -g POWERLEVEL9K_VCS_VISUAL_IDENTIFIER_COLOR=$oasis_mantle
 
   typeset -g POWERLEVEL9K_PROMPT_CHAR_OK_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=$oasis_primary
   typeset -g POWERLEVEL9K_PROMPT_CHAR_ERROR_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=$oasis_error
@@ -1861,17 +1875,17 @@
   typeset -g POWERLEVEL9K_DIRENV_FOREGROUND=$oasis_warning
   typeset -g POWERLEVEL9K_DIRENV_BACKGROUND=$oasis_mantle
 
-  typeset -g POWERLEVEL9K_ASDF_FOREGROUND=$oasis_text
+  typeset -g POWERLEVEL9K_ASDF_FOREGROUND=$oasis_primary
   typeset -g POWERLEVEL9K_ASDF_BACKGROUND=$oasis_surface
-  typeset -g POWERLEVEL9K_VIRTUALENV_FOREGROUND=$oasis_text
+  typeset -g POWERLEVEL9K_VIRTUALENV_FOREGROUND=$oasis_primary
   typeset -g POWERLEVEL9K_VIRTUALENV_BACKGROUND=$oasis_surface
-  typeset -g POWERLEVEL9K_ANACONDA_FOREGROUND=$oasis_text
+  typeset -g POWERLEVEL9K_ANACONDA_FOREGROUND=$oasis_primary
   typeset -g POWERLEVEL9K_ANACONDA_BACKGROUND=$oasis_surface
-  typeset -g POWERLEVEL9K_PYENV_FOREGROUND=$oasis_text
+  typeset -g POWERLEVEL9K_PYENV_FOREGROUND=$oasis_primary
   typeset -g POWERLEVEL9K_PYENV_BACKGROUND=$oasis_surface
-  typeset -g POWERLEVEL9K_NVM_FOREGROUND=$oasis_text
+  typeset -g POWERLEVEL9K_NVM_FOREGROUND=$oasis_primary
   typeset -g POWERLEVEL9K_NVM_BACKGROUND=$oasis_surface
-  typeset -g POWERLEVEL9K_NODEENV_FOREGROUND=$oasis_text
+  typeset -g POWERLEVEL9K_NODEENV_FOREGROUND=$oasis_primary
   typeset -g POWERLEVEL9K_NODEENV_BACKGROUND=$oasis_surface
 
   typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=$oasis_warning
