@@ -147,20 +147,17 @@ On a machine with no `~/.zshrc.local`, the shared defaults apply unchanged.
 
 ### opencode machine-specific config
 
-opencode merges config files together (later sources override earlier ones), so
-the same `.zshrc.local` pattern applies. The shared `opencode.json` in this repo
-holds only settings common to every machine (watcher, sharing, autoupdate). Any
-machine-only settings live in `~/.config/opencode/opencode.local.json`, which is
-git-ignored and loaded via the `OPENCODE_CONFIG` environment variable.
+The shared `opencode.json` in this repo (symlinked to
+`~/.config/opencode/opencode.json`) holds only settings common to every machine
+(watcher, sharing, autoupdate, plugins). Machine-only settings — model choices,
+work-only MCP servers, custom agents — live in **untracked** files under
+`~/.config/opencode/`, which opencode always loads from its global config
+directory. Only individual files are symlinked from this repo, so anything you
+drop into `~/.config/opencode/` that is not one of those tracked files stays
+local to the machine.
 
-`~/.zshrc.local` points opencode at the local file:
-
-```sh
-export OPENCODE_CONFIG="$HOME/.config/opencode/opencode.local.json"
-```
-
-Example work `~/.config/opencode/opencode.local.json` (compaction model + a
-work-only Atlassian MCP server):
+Machine-only config goes in `~/.config/opencode/opencode.local.json`, which is
+git-ignored. Example (compaction model + a work-only Atlassian MCP server):
 
 ```json
 {
@@ -180,10 +177,35 @@ work-only Atlassian MCP server):
 }
 ```
 
-`OPENCODE_CONFIG` is loaded between the global and project configs, so these
-settings merge on top of the shared `opencode.json`. On a machine without the
-local file (or the env var), only the shared config applies. Verify the merged
-result with `opencode debug config`.
+Verify the merged result with `opencode debug config`.
+
+### opencode command models (`git-cheap` agent)
+
+The tracked `/commit` and `/pr` slash commands
+(`.config/opencode/command/*.md`) run cheaper work that does not need the
+default model, so they reference `agent: git-cheap`. Model names are provider-
+and machine-specific, so the `git-cheap` agent is not tracked in this repo — it
+is defined per machine as a markdown agent file at
+`~/.config/opencode/agent/git-cheap.md`, which opencode loads automatically from
+the global agent directory.
+
+To set this up on a new machine, create that file pointing at whatever cheap
+model the machine has:
+
+```md
+---
+description: Cheap primary agent for routine git tasks like committing and opening PRs.
+mode: primary
+model: anthropic/claude-3-5-sonnet-latest
+---
+
+You are a focused git assistant. Perform the requested git task carefully and
+concisely. Inspect the working tree before staging, never commit secrets, and
+follow the repository's existing commit and PR conventions.
+```
+
+If a machine does not define `git-cheap`, the `/commit` and `/pr` commands will
+fail to resolve the agent — create the file (any model works) before using them.
 
 ## opencode
 
