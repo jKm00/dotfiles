@@ -13,7 +13,7 @@ The repo is the source of truth. Active config files in `$HOME` are symlinked ba
 | zsh           | Shell config and aliases                                      | `.zshrc`             |
 | Powerlevel10k | Prompt layout and Oasis Twilight color overrides              | `.p10k.zsh`          |
 | Nvim          | Editor config, Oasis theme, opencode.nvim integration         | `.config/nvim`       |
-| opencode      | TUI config and transparent Oasis Twilight theme               | `.config/opencode`   |
+| opencode      | TUI config, transparent Oasis Twilight theme, output-style plugin, AGENTS.md, slash commands | `.config/opencode`   |
 | wallpapers    | Shared terminal wallpaper assets                              | `.config/wallpapers` |
 | VS Code       | Settings, keybindings and extensions list                     | `vscode`             |
 
@@ -36,7 +36,10 @@ Selective symlinks keep generated/runtime files out of git:
 ~/.config/tmux/hooks -> ~/dev/repos/personal/dotfiles/.config/tmux/hooks
 ~/.config/opencode/opencode.json -> ~/dev/repos/personal/dotfiles/.config/opencode/opencode.json
 ~/.config/opencode/tui.json -> ~/dev/repos/personal/dotfiles/.config/opencode/tui.json
+~/.config/opencode/AGENTS.md -> ~/dev/repos/personal/dotfiles/.config/opencode/AGENTS.md
 ~/.config/opencode/themes -> ~/dev/repos/personal/dotfiles/.config/opencode/themes
+~/.config/opencode/plugin -> ~/dev/repos/personal/dotfiles/.config/opencode/plugin
+~/.config/opencode/command/*.md -> ~/dev/repos/personal/dotfiles/.config/opencode/command/*.md
 ```
 
 Local-only paths:
@@ -44,9 +47,8 @@ Local-only paths:
 ```text
 ~/.config/tmux/plugins
 ~/.config/opencode/node_modules
-~/.config/opencode/package.json
-~/.config/opencode/package-lock.json
 ~/.config/opencode/opencode.local.json
+~/.config/opencode/agent/*.md (except those tracked in the repo)
 ~/.local/share/nvim/lazy
 ```
 
@@ -148,17 +150,24 @@ On a machine with no `~/.zshrc.local`, the shared defaults apply unchanged.
 ### opencode machine-specific config
 
 The shared `opencode.json` in this repo is symlinked to
-`~/.config/opencode/opencode.json` and is the config opencode loads. opencode
-does **not** load any `opencode.local.json` — there is no such convention. The
-only things that are machine-specific are:
+`~/.config/opencode/opencode.json` and contains all the settings opencode
+loads by default. Machine-specific overrides can be defined in
+`~/.config/opencode/opencode.local.json` (git-ignored), which opencode
+automatically merges over the base config. The local config is optional; if it
+does not exist, the shared defaults apply unchanged.
+
+The things that are machine-specific:
 
 - **MCP auth tokens** — stored by opencode in
   `~/.local/share/opencode/mcp-auth.json`, never in config and never in this
   repo. You authenticate once per machine.
 - **Custom agents** — markdown files under `~/.config/opencode/agent/`. Only
-  individual files in `~/.config/opencode/` are symlinked from this repo, so any
-  agent file you add there that is not tracked stays local to the machine (see
-  the `git-cheap` agent below).
+  individual files in `~/.config/opencode/` are symlinked from this repo, so
+  any agent file you add to `~/.config/opencode/agent/` that is not tracked
+  stays local to the machine (see the `git-cheap` agent below).
+- **Local config overrides** — `~/.config/opencode/opencode.local.json`
+  (git-ignored) for machine-only settings like work MCP servers or alternate
+  model selections.
 
 MCP servers live in the tracked `opencode.json`. The Atlassian server is
 enabled for every machine:
@@ -185,7 +194,7 @@ with `opencode debug config`.
 
 ### opencode command models (`git-cheap` agent)
 
-The tracked `/commit` and `/pr` slash commands
+The tracked `/commit`, `/pr`, and `/docs` slash commands
 (`.config/opencode/command/*.md`) run cheaper work that does not need the
 default model, so they reference `agent: git-cheap`. Model names are provider-
 and machine-specific, so the `git-cheap` agent is not tracked in this repo — it
@@ -208,7 +217,7 @@ concisely. Inspect the working tree before staging, never commit secrets, and
 follow the repository's existing commit and PR conventions.
 ```
 
-If a machine does not define `git-cheap`, the `/commit` and `/pr` commands will
+If a machine does not define `git-cheap`, the `/commit`, `/pr`, and `/docs` commands will
 fail to resolve the agent — create the file (any model works) before using them.
 
 ## opencode
