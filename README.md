@@ -147,37 +147,41 @@ On a machine with no `~/.zshrc.local`, the shared defaults apply unchanged.
 
 ### opencode machine-specific config
 
-The shared `opencode.json` in this repo (symlinked to
-`~/.config/opencode/opencode.json`) holds only settings common to every machine
-(watcher, sharing, autoupdate, plugins). Machine-only settings — model choices,
-work-only MCP servers, custom agents — live in **untracked** files under
-`~/.config/opencode/`, which opencode always loads from its global config
-directory. Only individual files are symlinked from this repo, so anything you
-drop into `~/.config/opencode/` that is not one of those tracked files stays
-local to the machine.
+The shared `opencode.json` in this repo is symlinked to
+`~/.config/opencode/opencode.json` and is the config opencode loads. opencode
+does **not** load any `opencode.local.json` — there is no such convention. The
+only things that are machine-specific are:
 
-Machine-only config goes in `~/.config/opencode/opencode.local.json`, which is
-git-ignored. Example (compaction model + a work-only Atlassian MCP server):
+- **MCP auth tokens** — stored by opencode in
+  `~/.local/share/opencode/mcp-auth.json`, never in config and never in this
+  repo. You authenticate once per machine.
+- **Custom agents** — markdown files under `~/.config/opencode/agent/`. Only
+  individual files in `~/.config/opencode/` are symlinked from this repo, so any
+  agent file you add there that is not tracked stays local to the machine (see
+  the `git-cheap` agent below).
+
+MCP servers live in the tracked `opencode.json`. The Atlassian server is
+enabled for every machine:
 
 ```json
-{
-  "$schema": "https://opencode.ai/config.json",
-  "agent": {
-    "compaction": {
-      "model": "github-copilot/gpt-5.4"
-    }
-  },
-  "mcp": {
-    "atlassian": {
-      "type": "remote",
-      "url": "https://mcp.atlassian.com/v1/sse",
-      "oauth": {}
-    }
+"mcp": {
+  "atlassian": {
+    "type": "remote",
+    "url": "https://mcp.atlassian.com/v1/sse",
+    "oauth": {}
   }
 }
 ```
 
-Verify the merged result with `opencode debug config`.
+On a new machine, authenticate the server once:
+
+```sh
+opencode mcp auth atlassian
+```
+
+Until you authenticate, the server is configured but its tools are unusable on
+that machine. Check status with `opencode mcp list` and the full merged config
+with `opencode debug config`.
 
 ### opencode command models (`git-cheap` agent)
 

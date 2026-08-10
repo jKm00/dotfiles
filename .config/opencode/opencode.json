@@ -5,5 +5,12 @@
   },
   "share": "disabled",
   "autoupdate": "notify",
-  "plugin": ["./plugin/output-style.ts"]
+  "plugin": ["./plugin/output-style.ts"],
+  "mcp": {
+    "atlassian": {
+      "type": "remote",
+      "url": "https://mcp.atlassian.com/v1/sse",
+      "oauth": {}
+    }
+  }
 }
