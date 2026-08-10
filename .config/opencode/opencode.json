@@ -4,5 +4,6 @@
     "ignore": ["node_modules/**", "dist/**", ".git/**"]
   },
   "share": "disabled",
-  "autoupdate": "notify"
+  "autoupdate": "notify",
+  "plugin": ["./plugin/output-style.ts"]
 }
