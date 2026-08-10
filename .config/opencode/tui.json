@@ -2,7 +2,6 @@
   "$schema": "https://opencode.ai/tui.json",
   "theme": "oasis-twilight-transparent",
   "keybinds": {
-    "leader": "ctrl+x",
-    "input_newline": "ctrl+return,ctrl+j"
+    "leader": "ctrl+x"
   }
 }
