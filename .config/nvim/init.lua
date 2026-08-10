@@ -266,6 +266,22 @@ vim.api.nvim_create_autocmd("FileChangedShellPost", {
 	end,
 })
 
+-- Ensure Terraform files always get the `terraform` filetype, even when blank.
+--
+-- Neovim's built-in detection for the ambiguous `.tf` extension is
+-- content-based: an existing file with HCL in it resolves to `terraform`, but
+-- a brand-new *empty* `.tf` buffer falls back to the `tf` filetype. Because
+-- terraform-ls and the treesitter parser are registered for `terraform` (not
+-- `tf`), new files got no LSP or highlighting until you typed something and
+-- saved (which re-ran content-based detection). Mapping the extension
+-- explicitly makes even blank `.tf` files resolve to `terraform` right away.
+vim.filetype.add({
+	extension = {
+		tf = "terraform",
+		tfvars = "terraform-vars",
+	},
+})
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -586,6 +602,9 @@ require("lazy").setup({
 					--  Most Language Servers support renaming across files, etc.
 					map("<leader>cr", vim.lsp.buf.rename, "[Code] action [R]ename")
 
+					-- Restart the language server(s) attached to this buffer.
+					map("<leader>cl", "<cmd>LspRestart<cr>", "[C]ode [L]sp Restart")
+
 					-- Execute a code action, usually your cursor needs to be on top of an error
 					-- or a suggestion from your LSP for this to activate.
 					map("<leader>ca", vim.lsp.buf.code_action, "Goto [C]ode [A]ction", { "n", "x" })
@@ -608,11 +627,11 @@ require("lazy").setup({
 
 					-- Fuzzy find all the symbols in your current document.
 					--  Symbols are things like variables, functions, types, etc.
-					map(
-						"<leader>fa",
-						require("telescope.builtin").lsp_document_symbols,
-						"[F]ind [A]ll Document Symbols"
-					)
+					map("<leader>fa", function()
+						require("telescope.builtin").lsp_document_symbols({
+							sorter = require("telescope.config").values.generic_sorter({}),
+						})
+					end, "[F]ind [A]ll Document Symbols")
 
 					-- Fuzzy find all the symbols in your current workspace.
 					--  Similar to document symbols, except searches over your entire project.
