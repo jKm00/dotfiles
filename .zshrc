@@ -71,3 +71,6 @@ alias jarvis="opencode --port"
 # Utils commands
 whoisonport() { sudo lsof -i :"$1" } # whoisonport 3000
 killport() { sudo kill -9 $(sudo lsof -t -i :"$1") } # killport 3000
+
+# Machine-specific config (work vs personal). Not tracked in the repo.
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local

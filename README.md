@@ -72,6 +72,31 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 After opening tmux, install plugins with `prefix + I`.
 
+## Machine-specific config
+
+`.zshrc` is shared across machines (work and personal). Anything that only applies
+to a single machine — work certs, cloud profiles, machine-local overrides — lives in
+`~/.zshrc.local`, which is git-ignored and never committed.
+
+The shared `.zshrc` sources it at the end if it exists:
+
+```sh
+# Machine-specific config (work vs personal). Not tracked in the repo.
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+```
+
+Because it is sourced last, `~/.zshrc.local` can also override shared defaults
+(e.g. redefine an alias). Example work `~/.zshrc.local`:
+
+```sh
+export NODE_EXTRA_CA_CERTS="$HOME/.certs/dnb_root.pem"
+export AWS_PROFILE=gs
+. "$HOME/.local/bin/env"
+alias jarvis="raicode"
+```
+
+On a machine with no `~/.zshrc.local`, the shared defaults apply unchanged.
+
 ## opencode
 
 `jarvis` starts opencode with a local server so Nvim can connect to the existing tmux pane:
