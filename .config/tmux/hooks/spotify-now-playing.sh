@@ -25,25 +25,40 @@ command -v jq >/dev/null 2>&1 || exit 0
 CACHE_TTL="${SPOTIFY_CACHE_TTL:-6}"
 CACHE_FILE="${TMPDIR:-/tmp}/tmux-spotify-now-playing.$(id -u).json"
 
-playback=""
-if [ -f "$CACHE_FILE" ]; then
+# How long (seconds) a cached track stays valid to display when fresh fetches
+# keep failing (e.g. sustained rate-limiting). After this, we stop showing a
+# stale song rather than freeze forever.
+STALE_MAX="${SPOTIFY_STALE_MAX:-60}"
+
+cache_age() {
+  [ -f "$CACHE_FILE" ] || { echo 999999; return; }
+  local now mtime
   now="$(date +%s)"
   mtime="$(stat -f %m "$CACHE_FILE" 2>/dev/null || stat -c %Y "$CACHE_FILE" 2>/dev/null || echo 0)"
-  if [ $((now - mtime)) -lt "$CACHE_TTL" ]; then
+  echo $((now - mtime))
+}
+
+age="$(cache_age)"
+playback=""
+
+if [ "$age" -lt "$CACHE_TTL" ]; then
+  # Fresh cache: reuse it, no API call.
+  playback="$(cat "$CACHE_FILE" 2>/dev/null)"
+else
+  # Stale/missing cache: fetch fresh. Discard stderr (auth prompts, 429, etc.).
+  fresh="$(spotify_player get key playback 2>/dev/null)"
+  if echo "$fresh" | jq -e 'type == "object" and .item != null' >/dev/null 2>&1; then
+    # Good response with a track: cache it and use it.
+    printf '%s' "$fresh" > "$CACHE_FILE" 2>/dev/null
+    playback="$fresh"
+  elif [ "$age" -lt "$STALE_MAX" ]; then
+    # Fetch failed/empty (rate-limited, no device, etc.) but the last known
+    # track is still recent enough: keep showing it to avoid flicker.
     playback="$(cat "$CACHE_FILE" 2>/dev/null)"
   fi
 fi
 
-if [ -z "$playback" ]; then
-  # Fetch playback JSON. Discard stderr (auth prompts, rate-limit messages, etc.).
-  playback="$(spotify_player get key playback 2>/dev/null)" || exit 0
-  # Only cache well-formed JSON objects.
-  if echo "$playback" | jq -e 'type == "object"' >/dev/null 2>&1; then
-    printf '%s' "$playback" > "$CACHE_FILE" 2>/dev/null
-  fi
-fi
-
-# Bail out unless we got a JSON object with a track item.
+# Bail out unless we ended up with a JSON object with a track item.
 echo "$playback" | jq -e 'type == "object" and .item != null' >/dev/null 2>&1 || exit 0
 
 is_playing="$(echo "$playback" | jq -r '.is_playing // false')"
