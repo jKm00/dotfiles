@@ -9,7 +9,7 @@ The repo is the source of truth. Active config files in `$HOME` are symlinked ba
 | Config        | Purpose                                                       | Source               |
 | ------------- | ------------------------------------------------------------- | -------------------- |
 | Ghostty       | Terminal theme, wallpaper, opacity and shaders                | `.config/ghostty`    |
-| tmux          | Multiplexer config, Oasis Twilight theme, Spotify integration | `.config/tmux`       |
+| tmux          | Multiplexer config, Oasis Twilight theme, spotify_player integration | `.config/tmux`       |
 | zsh           | Shell config and aliases                                      | `.zshrc`             |
 | Powerlevel10k | Prompt layout and Oasis Twilight color overrides              | `.p10k.zsh`          |
 | Nvim          | Editor config, Oasis theme, opencode.nvim integration         | `.config/nvim`       |
@@ -71,6 +71,53 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ```
 
 After opening tmux, install plugins with `prefix + I`.
+
+## Spotify integration (tmux)
+
+The tmux status bar shows the currently playing Spotify track, and `prefix + s`
+opens a control menu (play/pause, next, previous, shuffle, repeat, like, open TUI).
+Both are driven by [`spotify_player`](https://github.com/aome510/spotify-player)
+via its CLI — there is no tmux plugin involved.
+
+### Prerequisites
+
+```sh
+brew install spotify_player jq
+```
+
+- `spotify_player` — the player and CLI that reports playback state.
+  Requires **0.24.1 or newer**; older versions relied on a shared Spotify
+  client ID that has since been revoked (symptoms: the TUI does nothing and the
+  CLI returns persistent `429 Too Many Requests`).
+- `jq` — used by the status script to parse the playback JSON.
+
+### First-time authentication
+
+Authenticate once with your personal Spotify account (no Premium required for the
+status bar; playback control needs an active Spotify device):
+
+```sh
+spotify_player authenticate
+```
+
+This caches credentials under `~/.cache/spotify-player/`. Config lives in
+`~/.config/spotify-player/app.toml` (managed by `spotify_player`, not this repo).
+
+### How it is wired
+
+- `.config/tmux/hooks/spotify-now-playing.sh` runs `spotify_player get key playback`,
+  formats it as `▶ Track — Artist` (`▌▌` when paused), truncates long titles, and
+  caches the result for ~6s so frequent status redraws do not hit the Spotify API.
+  It prints nothing when idle, rate-limited, or if `spotify_player`/`jq` are missing.
+- `tmux.conf` sets `status-right` to call that script, ahead of the Oasis modules.
+  It is set **directly** (not via `run-shell`) so tmux stores the `#(...)` and
+  `#{E:...}` placeholders literally and evaluates them at render time.
+  `status-right-length` is bumped to `200` so the combined string is not truncated.
+- `prefix + s` is bound to a `display-menu` whose entries shell out to
+  `spotify_player playback ...` / `spotify_player like`.
+
+The `hooks` directory is already symlinked (see [Symlinks](#symlinks)), so the
+script is picked up automatically with no extra linking.
 
 ## Machine-specific config
 
