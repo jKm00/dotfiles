@@ -46,6 +46,7 @@ Local-only paths:
 ~/.config/opencode/node_modules
 ~/.config/opencode/package.json
 ~/.config/opencode/package-lock.json
+~/.config/opencode/opencode.local.json
 ~/.local/share/nvim/lazy
 ```
 
@@ -136,13 +137,53 @@ Because it is sourced last, `~/.zshrc.local` can also override shared defaults
 (e.g. redefine an alias). Example work `~/.zshrc.local`:
 
 ```sh
-export NODE_EXTRA_CA_CERTS="$HOME/.certs/dnb_root.pem"
-export AWS_PROFILE=gs
+export NODE_EXTRA_CA_CERTS="$HOME/.certs/corp-root.pem"
+export AWS_PROFILE=work
 . "$HOME/.local/bin/env"
 alias jarvis="raicode"
 ```
 
 On a machine with no `~/.zshrc.local`, the shared defaults apply unchanged.
+
+### opencode machine-specific config
+
+opencode merges config files together (later sources override earlier ones), so
+the same `.zshrc.local` pattern applies. The shared `opencode.json` in this repo
+holds only settings common to every machine (watcher, sharing, autoupdate). Any
+machine-only settings live in `~/.config/opencode/opencode.local.json`, which is
+git-ignored and loaded via the `OPENCODE_CONFIG` environment variable.
+
+`~/.zshrc.local` points opencode at the local file:
+
+```sh
+export OPENCODE_CONFIG="$HOME/.config/opencode/opencode.local.json"
+```
+
+Example work `~/.config/opencode/opencode.local.json` (compaction model + a
+work-only Atlassian MCP server):
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "compaction": {
+      "model": "github-copilot/gpt-5.4"
+    }
+  },
+  "mcp": {
+    "atlassian": {
+      "type": "remote",
+      "url": "https://mcp.atlassian.com/v1/sse",
+      "oauth": {}
+    }
+  }
+}
+```
+
+`OPENCODE_CONFIG` is loaded between the global and project configs, so these
+settings merge on top of the shared `opencode.json`. On a machine without the
+local file (or the env var), only the shared config applies. Verify the merged
+result with `opencode debug config`.
 
 ## opencode
 
