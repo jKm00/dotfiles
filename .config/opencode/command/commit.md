@@ -1,7 +1,7 @@
 ---
 description: Commit all uncommitted changes, grouped into logical commits
 agent: git-cheap
-subtask: false
+subtask: true
 ---
 
 Commit the current uncommitted work in this repository, split into logical, self-contained commits.

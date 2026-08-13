@@ -1,7 +1,7 @@
 ---
 description: Reconcile docs (README and others) with the current state of the repo
 agent: git-cheap
-subtask: false
+subtask: true
 ---
 
 Update the repository's documentation so it accurately describes the CURRENT

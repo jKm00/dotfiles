@@ -1,7 +1,7 @@
 ---
 description: Create a GitHub PR for the current branch with a description generated from the diff
 agent: git-cheap
-subtask: false
+subtask: true
 ---
 
 Create a GitHub pull request for the currently checked-out branch, with a title and body derived from the actual changes.
