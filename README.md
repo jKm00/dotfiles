@@ -207,8 +207,8 @@ model the machine has:
 
 ```md
 ---
-description: Cheap primary agent for routine git tasks like committing and opening PRs.
-mode: primary
+description: Cheap subagent for routine git tasks like committing and opening PRs.
+mode: subagent
 model: anthropic/claude-3-5-sonnet-latest
 ---
 
@@ -216,6 +216,12 @@ You are a focused git assistant. Perform the requested git task carefully and
 concisely. Inspect the working tree before staging, never commit secrets, and
 follow the repository's existing commit and PR conventions.
 ```
+
+The agent must be `mode: subagent` (not `primary`), and the `/commit`, `/pr`,
+and `/docs` commands set `subtask: true`. This runs each command in a fresh,
+isolated context instead of switching the primary agent of your current
+session — which would force opencode to compact the whole session first, every
+time you invoke the command.
 
 If a machine does not define `git-cheap`, the `/commit`, `/pr`, and `/docs` commands will
 fail to resolve the agent — create the file (any model works) before using them.
