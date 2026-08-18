@@ -23,7 +23,7 @@ custom-shader = shaders/cursor_border_twilight_frosted.glsl
 custom-shader-animation = true
 
 # Treat the left Option key as Alt/Meta so tmux receives M-h/j/k/l, etc.
-macos-option-as-alt = right
+macos-option-as-alt = left
 
 # Keybinds
 keybind = cmd+shift+f>1=set_font_size:14
