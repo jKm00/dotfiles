@@ -5,7 +5,6 @@
   },
   "share": "disabled",
   "autoupdate": "notify",
-  "plugin": ["./plugin/output-style.ts"],
   "mcp": {
     "atlassian": {
       "type": "remote",
