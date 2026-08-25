@@ -771,6 +771,14 @@ require("lazy").setup({
 				svelte = {},
 				tailwindcss = {},
 				terraformls = {},
+
+				-- Kotlin LSP (JetBrains official, based on IntelliJ IDEA).
+				-- Installed via Mason as `kotlin-lsp`; its executable is
+				-- `intellij-server`, which matches lspconfig's default `cmd`,
+				-- so no override is needed here. Handles both plain Kotlin and
+				-- Kotlin + Spring Boot codebases. Requires a Gradle/Maven project
+				-- root (settings.gradle(.kts), build.gradle(.kts), or pom.xml).
+				kotlin_lsp = {},
 				--
 
 				lua_ls = {
@@ -809,6 +817,7 @@ require("lazy").setup({
 				"ruff", -- Linter for Python
 				"black", -- Formatter for Python
 				"prettier", -- Formatter for various web related filetypes
+				"ktlint", -- Linter/formatter for Kotlin
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -861,6 +870,7 @@ require("lazy").setup({
 					liquid = { "prettier" },
 					lua = { "stylua" },
 					python = { "ruff", "black" },
+					kotlin = { "ktlint" },
 					terraform = { "terraform_fmt" },
 					["terraform-vars"] = { "terraform_fmt" },
 				},
@@ -1120,6 +1130,7 @@ require("lazy").setup({
 					"java",
 					"javascript",
 					"jinja",
+					"kotlin",
 					"lua",
 					"luadoc",
 					"markdown",
