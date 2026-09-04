@@ -2,6 +2,8 @@
 
 Personal configuration for a terminal-first macOS setup.
 
+![My setup](docs/screenshots/my-setup.png)
+
 This repo is the **source of truth**: the real files live here and are symlinked
 into `$HOME`. Editing either side edits the same file. Throughout this document
 `<repo>` means wherever you cloned this repo (it differs per machine).
