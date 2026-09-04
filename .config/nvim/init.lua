@@ -469,13 +469,28 @@ require("lazy").setup({
 			require("telescope").setup({
 				-- You can put your default mappings / updates / etc. in here
 				--  All the info you're looking for is in `:help telescope.setup()`
-				--
-				-- defaults = {
-				--   mappings = {
-				--     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-				--   },
-				-- },
-				-- pickers = {}
+				defaults = {
+					-- Hide noisy, high-volume directories from ALL pickers.
+					-- (Lua patterns, matched against the file path.)
+					file_ignore_patterns = {
+						"%.git[/\\]",
+						"node_modules[/\\]",
+						"%.venv[/\\]",
+						"__pycache__[/\\]",
+						"%.next[/\\]",
+						"dist[/\\]",
+						"build[/\\]",
+						"target[/\\]",
+					},
+				},
+				pickers = {
+					-- Show dotfiles (.env) and git-ignored files (e.g. AGENT.md);
+					-- the bloat above is still filtered out.
+					find_files = {
+						hidden = true,
+						no_ignore = true,
+					},
+				},
 				extensions = {
 					["ui-select"] = {
 						require("telescope.themes").get_dropdown(),
