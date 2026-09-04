@@ -16,7 +16,8 @@ source "$CONFIG_DIR/colors.sh"
 source "$CONFIG_DIR/plugins/icon_map.sh"
 
 BADGES_BIN="$CONFIG_DIR/helpers/dock_badges"
-SIG_FILE="/tmp/sketchybar_spaces_sig"
+SIG_FILE="/tmp/sketchybar_spaces_sig"       # membership/order (item add/remove)
+STATE_FILE="/tmp/sketchybar_spaces_state"   # full visible state (skip no-op renders)
 APPFONT="sketchybar-app-font:Regular:16.0"
 IDFONT="Hack Nerd Font:Bold:13.0"
 CNTFONT="Hack Nerd Font:Bold:11.0"
@@ -61,6 +62,18 @@ for sid in $(aerospace list-workspaces --all); do
 done
 
 SIG="$(printf '%s\n' "${desired[@]}")"
+
+# Full render state: focus + membership + per-app badge counts. If nothing that
+# affects the bar changed since last run, do nothing — this keeps the 3s poll
+# from mutating items under the cursor (which dropped/delayed clicks).
+STATE="focus=$FOCUSED"$'\n'"$SIG"
+for sid in "${visible_sids[@]}"; do
+  while IFS= read -r app; do
+    [ -z "$app" ] && continue
+    STATE+=$'\n'"$sid|$app|${BADGE[$app]}"
+  done <<< "${WS_APPS[$sid]}"
+done
+[ "$STATE" = "$(cat "$STATE_FILE" 2>/dev/null)" ] && exit 0
 
 # ---- Membership rebuild (only when the set/order changed) ----
 if [ "$SIG" != "$(cat "$SIG_FILE" 2>/dev/null)" ]; then
@@ -107,7 +120,7 @@ for sid in "${visible_sids[@]}"; do
     idcol="$FG"; appcol="$FG"; cntcol="$RED"; brbg="$ITEM_BG"; brborder="$BG_MANTLE"
   fi
 
-  click="aerospace workspace $sid; sketchybar --trigger aerospace_workspace_change"
+  click="aerospace workspace $sid"
 
   args+=(--set "ws.$sid"
     icon="$sid" icon.font="$IDFONT" icon.color="$idcol"
@@ -136,9 +149,13 @@ for sid in "${visible_sids[@]}"; do
     fi
   done <<< "${WS_APPS[$sid]}"
 
+  # Make the whole chip clickable (the bracket covers the gaps between glyphs).
   args+=(--set "br.$sid"
     background.drawing=on background.color="$brbg"
     background.border_color="$brborder" background.border_width=1
-    background.corner_radius=9 background.height=26)
+    background.corner_radius=9 background.height=26
+    click_script="$click")
 done
 [ ${#args[@]} -gt 0 ] && sketchybar "${args[@]}" >/dev/null 2>&1
+
+printf '%s' "$STATE" > "$STATE_FILE"

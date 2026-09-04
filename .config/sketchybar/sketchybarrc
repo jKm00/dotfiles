@@ -72,8 +72,8 @@ sketchybar --default "${default[@]}"
 # Workspace chips + the app icons each contains are created dynamically by
 # spaces.sh (one item per app so badged apps can show a count). The hidden
 # manager drives it on workspace/app changes and every 3s for Dock badges.
-# Reset the render signature so a fresh start always rebuilds the items.
-rm -f /tmp/sketchybar_spaces_sig
+# Reset the render signatures so a fresh start always rebuilds the items.
+rm -f /tmp/sketchybar_spaces_sig /tmp/sketchybar_spaces_state
 sketchybar --add item spaces_manager left \
   --set spaces_manager \
     drawing=off \
