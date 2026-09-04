@@ -25,31 +25,31 @@ section). Test *running* (not debugging) is separate — see
 
 ### Debugging a running service (not just tests)
 
-Every domain here is its **own** Gradle build (own `gradlew`), and the services
-are http4k/Jetty apps with the `application` plugin — so `run` tasks work. The
-simplest place to try RUN debugging is `digital-advisory`'s local dev server
-(mocked deps, no AWS creds, no args, port 8999):
+Each domain is its **own** Gradle build (own `gradlew`), and the services are
+http4k/Jetty apps with the `application` plugin — so `run` tasks work. A good
+place to try RUN debugging is a local dev server (mocked deps, no cloud creds,
+no args, e.g. port 8999):
 
 ```sh
-cd frontline-apis/savings-and-investments/digital-advisory
+cd services/example-service
 ./gradlew :production:local:run --debug-jvm
 ```
 
-Entry point: `LocalApp.kt` → `fun main` (`no.dnb.frontline.digitaladvisory.local.LocalAppKt`).
-In practice: open any file under `digital-advisory/`, `<leader>dk` → "Debug RUN".
+Entry point: `LocalApp.kt` → `fun main` (`com.example.app.local.LocalAppKt`).
+In practice: open any file under `example-service/`, `<leader>dk` → "Debug RUN".
 
-Other runnable `:production:local` servers: `ips`, `securities-financing`,
-`portfolio-insights` (the last needs `--env sit|uat` and hits real AWS SSM).
+Other runnable `:production:local` servers exist too; some need extra flags like
+`--env sit|uat` and hit real cloud SSM parameters.
 
 ## Why not the "normal" nvim Java/Kotlin debug path (jdtls + microsoft/java-debug)
 
 microsoft/java-debug is an Eclipse JDT plugin with **no standalone launcher** —
 it only runs hosted by jdtls (confirmed by the nvim-dap Java wiki and the
-java-debug README). On this repo (`pm-server-side`, a large **Gradle 9.x
-composite build**), jdtls's import fails:
+java-debug README). On a large **Gradle 9.x composite build**, jdtls's import
+fails:
 
 ```
-Resolution of the configuration ':si-api:annotationProcessor' was attempted
+Resolution of the configuration ':example-api:annotationProcessor' was attempted
 without an exclusive lock. This is unsafe and not allowed.
   at GradleAnnotationProcessorPatchPlugin ... init.gradle:88
 ```
@@ -61,8 +61,8 @@ annotation-processor configs, which Gradle 9 forbids. Two consequences:
    immediately disconnects → the debug UI never opens.
 2. As a fallback, jdtls runs the Eclipse builder and scatters
    `.project` / `.classpath` / `.settings/` / `bin/` (hundreds of files)
-   through the source tree. This repo's `.gitignore` only covers IntelliJ
-   artifacts, so these show up as untracked noise for everyone.
+   through the source tree. If the repo's `.gitignore` only covers IntelliJ
+   artifacts, these show up as untracked noise for everyone.
 
 There is no jdtls setting that fixes this on Gradle 9, so jdtls was removed
 entirely for Kotlin (kept for Go/Python/JS via their own adapters).
@@ -77,10 +77,10 @@ entirely for Kotlin (kept for Go/Python/JS via their own adapters).
 
 ### Verified working
 
-Smoke-tested against this repo's Gradle 9.5.1 composite build:
+Smoke-tested against a Gradle 9.5.1 composite build:
 
 ```sh
-./gradlew :si-kotlinx-serialization:test --debug-jvm
+./gradlew :example-serialization:test --debug-jvm
 ```
 
 Attaching the fwcd adapter and setting a breakpoint on
@@ -88,7 +88,7 @@ Attaching the fwcd adapter and setting a breakpoint on
 a real `stopped` (reason: breakpoint) event — the JVM halted inside the test
 run. **Zero** Eclipse artifacts were generated (git tree stayed clean).
 
-RUN (non-test) debugging was also verified: `digital-advisory`'s
+RUN (non-test) debugging was also verified: a service's
 `./gradlew :production:local:run --debug-jvm` with a breakpoint at
 `LocalApp.kt:45` in `fun main` fired on startup. Also zero artifacts.
 
@@ -125,7 +125,7 @@ RUN (non-test) debugging was also verified: `digital-advisory`'s
 
 ## The alternative to watch: JetBrains kotlin-lsp DAP
 
-We already use JetBrains' official **kotlin-lsp** for code intelligence
+This config already uses JetBrains' official **kotlin-lsp** for code intelligence
 (`init.lua`, `kotlin_lsp`). It now ships an **experimental attach-mode DAP** that
 would be the ideal setup: IntelliJ-grade Gradle 9 / composite import, no jdtls,
 no manual gradle step, and reuse of the same server we run for LSP.
@@ -134,7 +134,7 @@ no manual gradle step, and reuse of the same server we run for LSP.
 returns `verified: true` but the JVM never halts — no `stopped` event is ever
 emitted. Reproduced from both VS Code and Neovim, so it's server-side.
 
-- Issue: <https://github.com/Kotlin/kotlin-lsp/issues/198> (internal: **LSP-934**)
+- Issue: <https://github.com/Kotlin/kotlin-lsp/issues/198>
 - Maintainer (`fedochet`, May 4 2026): *"it is currently being fixed, and we
   hope to deliver the fix in the next release."*
 - Status as of last check (kotlin-lsp **v262.9593.0**, Jul 27 2026): issue still
@@ -149,7 +149,7 @@ emitted. Reproduced from both VS Code and Neovim, so it's server-side.
    the release notes for a version > v262.9593.0 mentioning DAP).
 2. Reproduce issue #198 directly (smallest possible test):
    ```sh
-   ./gradlew :si-common:si-kotlinx-serialization:test --debug-jvm
+   ./gradlew :common:example-serialization:test --debug-jvm
    ```
    Set a breakpoint in `ZonedDateTimeSerializer.deserialize` (or any test),
    attach, and see whether it actually stops.

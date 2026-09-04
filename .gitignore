@@ -2,6 +2,9 @@
 node_modules
 .zshrc.local
 
+# Machine-local agent guidelines (work-machine only, not public)
+AGENT.md
+
 # Compiled sketchybar helper (machine-specific binary; built from .swift)
 .config/sketchybar/helpers/keyboard_listener
 .config/sketchybar/helpers/dock_badges

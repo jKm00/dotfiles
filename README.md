@@ -259,7 +259,7 @@ Example work `~/.zshrc.local`:
 ```sh
 export NODE_EXTRA_CA_CERTS="$HOME/.certs/corp-root.pem"
 export AWS_PROFILE=work
-alias jarvis="raicode"
+alias jarvis="opencode --port 5000"   # override a shared alias on this machine
 ```
 
 ## Validation

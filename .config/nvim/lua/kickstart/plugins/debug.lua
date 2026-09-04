@@ -217,7 +217,7 @@ return {
 		--
 		-- NOTE: each domain here is its OWN Gradle build (its own gradlew),
 		-- so run tasks resolve within the current file's build. A runnable
-		-- example to try: open any file under digital-advisory/ and pick
+		-- example to try: open any file under a service dir and pick
 		-- "Debug RUN" -> it launches :production:local:run (a mocked local
 		-- HTTP server on :8999) under the debugger.
 		--
@@ -226,7 +226,7 @@ return {
 		-- gradle step and reuse the IntelliJ-grade project model. It is
 		-- NOT usable yet: breakpoints verify but never fire on Gradle
 		-- JDWP attach. Tracking:
-		--   https://github.com/Kotlin/kotlin-lsp/issues/198  (LSP-934)
+		--   https://github.com/Kotlin/kotlin-lsp/issues/198
 		--   plugin front-end: AlexandrosAlexiou/kotlin.nvim
 		-- Re-check when a kotlin-lsp release changelog mentions a DAP /
 		-- breakpoint fix; see docs/kotlin-debugging.md in this config.

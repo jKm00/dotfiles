@@ -113,7 +113,6 @@
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
-  // "github-enterprise.uri": "https://dnb.ghe.com",
   "editor.insertSpaces": false,
   "gitlens.ai.model": "vscode",
   "gitlens.ai.vscode.model": "copilot:gpt-4.1",

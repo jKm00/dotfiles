@@ -5,7 +5,7 @@ description: Use ONLY when explicitly invoked via /skill or when the user direct
 
 # Notes
 
-Document the key points from the active session as an HTML file in `~/dev/dnb/notes/quick-notes/`. Capture everything important, but keep it simple and uncluttered.
+Document the key points from the active session as an HTML file in `~/dev/notes/quick-notes/`. Capture everything important, but keep it simple and uncluttered.
 
 Do not look at existing notes or other files as reference. Implement solely from the instructions below.
 
