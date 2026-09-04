@@ -708,6 +708,39 @@ require("lazy").setup({
 							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
 						end, "[T]oggle Inlay [H]ints")
 					end
+
+					-- Pull diagnostics (LSP 3.17 `textDocument/diagnostic`).
+					-- Some servers -- notably the JetBrains Kotlin LSP
+					-- (`intellij-server`) -- only support the *pull* diagnostic
+					-- model and never send `textDocument/publishDiagnostics`. On
+					-- Neovim 0.11 the built-in pull loop isn't kicked off until an
+					-- edit event fires, so a freshly opened buffer shows nothing
+					-- until you type or save. We request one pull on attach (and on
+					-- BufEnter) and let Neovim's own `textDocument/diagnostic`
+					-- handler convert and display the results.
+					if
+						client
+						and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_diagnostic, event.buf)
+					then
+						local method = vim.lsp.protocol.Methods.textDocument_diagnostic
+						local function pull()
+							if not vim.api.nvim_buf_is_valid(event.buf) then
+								return
+							end
+							client:request(method, {
+								textDocument = vim.lsp.util.make_text_document_params(event.buf),
+							}, vim.lsp.handlers[method], event.buf)
+						end
+						-- Defer the initial pull so it runs after the server has
+						-- finished `initialize`/`didOpen`; an immediate request on
+						-- attach can race ahead of indexing and return nothing.
+						vim.defer_fn(pull, 500)
+						vim.api.nvim_create_autocmd("BufEnter", {
+							buffer = event.buf,
+							group = vim.api.nvim_create_augroup("kickstart-lsp-pull-diagnostics", { clear = false }),
+							callback = pull,
+						})
+					end
 				end,
 			})
 
@@ -739,6 +772,12 @@ require("lazy").setup({
 					end,
 				},
 			})
+
+			-- Cap LSP logging at ERROR. The pre-alpha JetBrains Kotlin server
+			-- (`intellij-server`) writes a flood of stderr -- progress dots, JVM
+			-- warnings, stack traces -- which lands in lsp.log at the default
+			-- WARN level and can grow the file to hundreds of MB.
+			vim.lsp.set_log_level("ERROR")
 
 			-- LSP servers and clients are able to communicate to each other what features they support.
 			--  By default, Neovim doesn't support everything that is in the LSP specification.
@@ -772,13 +811,11 @@ require("lazy").setup({
 				tailwindcss = {},
 				terraformls = {},
 
-				-- Kotlin LSP (JetBrains official, based on IntelliJ IDEA).
-				-- Installed via Mason as `kotlin-lsp`; its executable is
-				-- `intellij-server`, which matches lspconfig's default `cmd`,
-				-- so no override is needed here. Handles both plain Kotlin and
-				-- Kotlin + Spring Boot codebases. Requires a Gradle/Maven project
-				-- root (settings.gradle(.kts), build.gradle(.kts), or pom.xml).
-				kotlin_lsp = {},
+				-- Kotlin LSP (JetBrains official, based on IntelliJ IDEA) is
+				-- enabled separately below via vim.lsp.enable(), because it ships
+				-- as a new-style `lsp/kotlin_lsp.lua` config and has no old-style
+				-- `lspconfig.configs` module for the mason-lspconfig handler to
+				-- call setup() on. Leaving it in this table would silently no-op.
 				--
 
 				lua_ls = {
@@ -835,6 +872,41 @@ require("lazy").setup({
 					end,
 				},
 			})
+
+			-- Kotlin LSP (JetBrains `intellij-server`, installed via Mason as
+			-- `kotlin-lsp`) uses the new-style vim.lsp.config API shipped by
+			-- nvim-lspconfig as `lsp/kotlin_lsp.lua`. It is not wired through the
+			-- mason-lspconfig handler above (which relies on the legacy
+			-- `lspconfig.configs.*` modules that kotlin_lsp does not have), so we
+			-- attach our blink.cmp capabilities and enable it directly here.
+			--
+			-- WORKAROUND: kotlin_lsp sends a stale `textDocument.version` in the
+			-- `documentChanges` of rename (and other) workspace edits. Neovim's
+			-- `apply_text_edits` compares that version against the buffer's tracked
+			-- version and aborts with "Buffer N newer than edits" when the edit's
+			-- version looks older. Stripping the version makes Neovim skip the
+			-- check and apply the edit. Scoped to kotlin_lsp via a client handler.
+			local function strip_workspace_edit_versions(workspace_edit)
+				if workspace_edit and workspace_edit.documentChanges then
+					for _, change in ipairs(workspace_edit.documentChanges) do
+						if change.textDocument then
+							change.textDocument.version = nil
+						end
+					end
+				end
+				return workspace_edit
+			end
+
+			vim.lsp.config("kotlin_lsp", {
+				capabilities = capabilities,
+				handlers = {
+					["textDocument/rename"] = function(err, result, ctx, config)
+						strip_workspace_edit_versions(result)
+						return vim.lsp.handlers["textDocument/rename"](err, result, ctx, config)
+					end,
+				},
+			})
+			vim.lsp.enable("kotlin_lsp")
 		end,
 	},
 
@@ -989,11 +1061,11 @@ require("lazy").setup({
 				nerd_font_variant = "mono",
 			},
 
-			completion = {
-				-- By default, you may press `<c-space>` to show the documentation.
-				-- Optionally, set `auto_show = true` to show the documentation after a delay.
-				documentation = { auto_show = false, auto_show_delay_ms = 500 },
-			},
+		completion = {
+			-- By default, you may press `<c-space>` to show the documentation.
+			-- Optionally, set `auto_show = true` to show the documentation after a delay.
+			documentation = { auto_show = false, auto_show_delay_ms = 500 },
+		},
 
 			sources = {
 				default = { "lsp", "path", "snippets", "lazydev" },

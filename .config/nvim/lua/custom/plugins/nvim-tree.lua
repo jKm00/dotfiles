@@ -44,6 +44,7 @@ return {
       },
       renderer = {
         full_name = false,
+        group_empty = true,
         indent_markers = {
           enable = false,
         },
@@ -65,6 +66,27 @@ return {
     config = function(_, opts)
       local nvimtree = require 'nvim-tree'
 
+      -- Persist tree width across open/close cycles
+      local tree_width = opts.view.width
+
+      local function get_tree_win()
+        for _, win in ipairs(vim.api.nvim_list_wins()) do
+          local buf = vim.api.nvim_win_get_buf(win)
+          if vim.bo[buf].filetype == 'NvimTree' then
+            return win
+          end
+        end
+      end
+
+      local function resize_tree(delta)
+        local win = get_tree_win()
+        if not win then return end
+        local new_width = vim.api.nvim_win_get_width(win) + delta
+        if new_width < 10 then new_width = 10 end
+        vim.api.nvim_win_set_width(win, new_width)
+        tree_width = new_width
+      end
+
       local function keybindings(bufnr)
         local api = require 'nvim-tree.api'
 
@@ -85,9 +107,24 @@ return {
         vim.keymap.set('n', 'P', api.node.open.preview, ops 'Preview')
         vim.keymap.set('n', 's', api.node.open.vertical_no_picker, ops 'Open Vertical')
         vim.keymap.set('n', 'S', api.node.open.horizontal_no_picker, ops 'Open Horizontal')
+
+        -- resize with option+h/l (sidebar is on the right, so h grows and l shrinks)
+        vim.keymap.set('n', '<M-h>', function() resize_tree(2) end, ops 'Grow tree')
+        vim.keymap.set('n', '<M-l>', function() resize_tree(-2) end, ops 'Shrink tree')
       end
 
       opts.on_attach = keybindings
+
+      -- Restore saved width each time the tree opens
+      local api = require 'nvim-tree.api'
+      api.events.subscribe(api.events.Event.TreeOpen, function()
+        vim.schedule(function()
+          local win = get_tree_win()
+          if win then
+            vim.api.nvim_win_set_width(win, tree_width)
+          end
+        end)
+      end)
 
       nvimtree.setup(opts)
 
