@@ -8,6 +8,36 @@ source "$CONFIG_DIR/colors.sh"
 
 ##### Custom events #####
 sketchybar --add event aerospace_workspace_change
+sketchybar --add event keyboard_change
+
+##### Keyboard-layout listener #####
+# Instant input-source updates via a tiny Swift listener on the TIS
+# distributed notification. Compile + launch in the background so a cold
+# `swiftc` never blocks bar startup; the keyboard item's update_freq is the
+# fallback until the listener is up.
+KB_SRC="$CONFIG_DIR/helpers/keyboard_listener.swift"
+KB_BIN="$CONFIG_DIR/helpers/keyboard_listener"
+pkill -f "$KB_BIN" 2>/dev/null
+{
+  if [ ! -x "$KB_BIN" ] || [ "$KB_SRC" -nt "$KB_BIN" ]; then
+    swiftc -O "$KB_SRC" -o "$KB_BIN" 2>/dev/null
+  fi
+  [ -x "$KB_BIN" ] && exec "$KB_BIN"
+} &
+
+##### Dock-badge reader #####
+# Compile + ad-hoc sign the badge helper once (in the background). Compiled
+# only when missing so its Accessibility grant survives reloads; the .swift
+# source is tracked, the binary is git-ignored and needs a one-time
+# Accessibility grant (run: helpers/dock_badges prompt).
+BADGE_SRC="$CONFIG_DIR/helpers/dock_badges.swift"
+BADGE_BIN="$CONFIG_DIR/helpers/dock_badges"
+{
+  if [ ! -x "$BADGE_BIN" ]; then
+    swiftc -O "$BADGE_SRC" -o "$BADGE_BIN" 2>/dev/null \
+      && codesign --force --sign - "$BADGE_BIN" 2>/dev/null
+  fi
+} &
 
 ##### Bar Appearance #####
 sketchybar --bar \
@@ -38,31 +68,17 @@ default=(
 )
 sketchybar --default "${default[@]}"
 
-##### Workspace chips (left) #####
-# One item per AeroSpace workspace; contents/highlight are managed by spaces.sh.
-for sid in $(aerospace list-workspaces --all); do
-  sketchybar --add item space."$sid" left \
-    --set space."$sid" \
-      icon="$sid" \
-      icon.font="Hack Nerd Font:Bold:13.0" \
-      icon.padding_left=9 \
-      icon.padding_right=4 \
-      label.font="sketchybar-app-font:Regular:16.0" \
-      label.padding_left=2 \
-      label.padding_right=9 \
-      background.color="$ITEM_BG" \
-      background.border_color="$BG_MANTLE" \
-      background.drawing=on \
-      drawing=off \
-      click_script="aerospace workspace $sid; sketchybar --trigger aerospace_workspace_change"
-done
-
-# Hidden manager item: re-renders all workspace chips on relevant events.
+##### Workspaces (left) #####
+# Workspace chips + the app icons each contains are created dynamically by
+# spaces.sh (one item per app so badged apps can show a count). The hidden
+# manager drives it on workspace/app changes and every 3s for Dock badges.
+# Reset the render signature so a fresh start always rebuilds the items.
+rm -f /tmp/sketchybar_spaces_sig
 sketchybar --add item spaces_manager left \
   --set spaces_manager \
     drawing=off \
     updates=on \
-    update_freq=15 \
+    update_freq=3 \
     script="$PLUGIN_DIR/spaces.sh" \
   --subscribe spaces_manager aerospace_workspace_change front_app_switched
 
@@ -94,7 +110,16 @@ sketchybar --add item clock right \
     icon.color="$CYAN" \
     background.color="$TRANSPARENT" \
     script="$PLUGIN_DIR/volume.sh" \
-  --subscribe volume volume_change
+  --subscribe volume volume_change \
+  --add item keyboard right \
+  --set keyboard \
+    update_freq=10 \
+    icon="󰌌" \
+    icon.color="$KHAKI" \
+    label.color="$FG" \
+    background.color="$TRANSPARENT" \
+    script="$PLUGIN_DIR/keyboard.sh" \
+  --subscribe keyboard keyboard_change
 
 ##### Finalize #####
 sketchybar --update
