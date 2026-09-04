@@ -83,7 +83,10 @@ gaps.inner.horizontal = 10
 gaps.inner.vertical =   10
 gaps.outer.left =       10
 gaps.outer.bottom =     10
-gaps.outer.top =        40
+# Smaller top gap on the built-in MacBook screen; 40 elsewhere (to clear SketchyBar).
+# Keyed on the display name so it stays correct even when the built-in becomes
+# the main display (e.g. when the external monitor is unplugged).
+gaps.outer.top =        [{ monitor."built-in retina" = 20 }, 45]
 gaps.outer.right =      10
 
 # 'main' binding mode declaration
