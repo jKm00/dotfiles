@@ -72,3 +72,12 @@ killport() { sudo kill -9 $(sudo lsof -t -i :"$1") } # killport 3000
 
 # Machine-specific config (work vs personal). Not tracked in the repo.
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+export PATH="$HOME/.cargo/bin:$PATH"
+
+swagger() {
+  if ! command -v openapi-tui &>/dev/null; then
+    echo "openapi-tui not installed — run: cargo install openapi-tui"
+    return 1
+  fi
+  openapi-tui "$@"
+}
