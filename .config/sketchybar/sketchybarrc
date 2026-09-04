@@ -72,15 +72,17 @@ sketchybar --default "${default[@]}"
 # Workspace chips + the app icons each contains are created dynamically by
 # spaces.sh (one item per app so badged apps can show a count). The hidden
 # manager drives it on workspace/app changes and every 3s for Dock badges.
-# Reset the render signatures so a fresh start always rebuilds the items.
-rm -f /tmp/sketchybar_spaces_sig /tmp/sketchybar_spaces_state
+# Reset the render caches so a fresh start always rebuilds the items, and prime
+# the monitor signature so the first cross-monitor switch doesn't force a rebuild.
+rm -f /tmp/sketchybar_spaces_state /tmp/sketchybar_spaces_brackets
+aerospace list-monitors > /tmp/sketchybar_spaces_monitors 2>/dev/null
 sketchybar --add item spaces_manager left \
   --set spaces_manager \
     drawing=off \
     updates=on \
     update_freq=3 \
     script="$PLUGIN_DIR/spaces.sh" \
-  --subscribe spaces_manager aerospace_workspace_change front_app_switched
+  --subscribe spaces_manager aerospace_workspace_change front_app_switched system_woke display_change
 
 ##### Front app (left) #####
 sketchybar --add item front_app left \
