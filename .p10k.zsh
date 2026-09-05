@@ -108,7 +108,7 @@
     taskwarrior             # taskwarrior task count (https://taskwarrior.org/)
     per_directory_history   # Oh My Zsh per-directory-history local/global indicator
     # cpu_arch              # CPU architecture
-    oasis                   # theme marker
+    theme_marker            # active theme marker
     # =========================[ Line #2 ]=========================
     newline
     # ip                    # ip address and bandwidth usage for a specified network interface
@@ -1800,12 +1800,12 @@
     prompt_example
   }
 
-  function prompt_oasis() {
-    p10k segment -b '#f7997d' -f '#261a32' -t '✦'
+  function prompt_theme_marker() {
+    p10k segment -b '#cba6f7' -f '#1e1e2e' -t '✦'
   }
 
-  function instant_prompt_oasis() {
-    prompt_oasis
+  function instant_prompt_theme_marker() {
+    prompt_theme_marker
   }
 
   # User-defined prompt segments can be customized the same way as built-in segments.
@@ -1821,82 +1821,82 @@
   #   - same-dir: Trim down prompt when accepting a command line unless this is the first command
   #               typed after changing current working directory.
 
-  # Oasis Twilight palette overrides. Keep the wizard-generated prompt layout above, but align
-  # segment colors with Ghostty, tmux, Nvim and opencode.
-  local oasis_mantle='#261a32'
-  local oasis_surface='#362343'
-  local oasis_text='#efe6f4'
-  local oasis_muted='#b8a6c9'
-  local oasis_primary='#f7997d'
-  local oasis_secondary='#d2adff'
-  local oasis_error='#ff6b8a'
-  local oasis_warning='#f6c177'
+  # Catppuccin Mocha palette overrides. Keep the wizard-generated prompt layout above, but align
+  # segment colors with Ghostty, tmux, Nvim, opencode and SketchyBar.
+  local theme_mantle='#181825'
+  local theme_surface='#313244'
+  local theme_base='#1e1e2e'
+  local theme_text='#cdd6f4'
+  local theme_primary='#cba6f7'
+  local theme_secondary='#b4befe'
+  local theme_error='#f38ba8'
+  local theme_warning='#f9e2af'
 
-  typeset -g POWERLEVEL9K_MULTILINE_FIRST_PROMPT_GAP_FOREGROUND=$oasis_surface
+  typeset -g POWERLEVEL9K_MULTILINE_FIRST_PROMPT_GAP_FOREGROUND=$theme_surface
 
-  typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=$oasis_mantle
-  typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=$oasis_primary
+  typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=$theme_base
+  typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=$theme_primary
 
-  typeset -g POWERLEVEL9K_DIR_FOREGROUND=$oasis_primary
-  typeset -g POWERLEVEL9K_DIR_BACKGROUND=$oasis_surface
-  typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND=$oasis_primary
-  typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND=$oasis_primary
+  typeset -g POWERLEVEL9K_DIR_FOREGROUND=$theme_primary
+  typeset -g POWERLEVEL9K_DIR_BACKGROUND=$theme_surface
+  typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND=$theme_primary
+  typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND=$theme_primary
 
-  typeset -g POWERLEVEL9K_VCS_CLEAN_BACKGROUND=$oasis_secondary
-  typeset -g POWERLEVEL9K_VCS_CLEAN_FOREGROUND=$oasis_mantle
-  typeset -g POWERLEVEL9K_VCS_MODIFIED_BACKGROUND=$oasis_secondary
-  typeset -g POWERLEVEL9K_VCS_MODIFIED_FOREGROUND=$oasis_mantle
-  typeset -g POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND=$oasis_secondary
-  typeset -g POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND=$oasis_mantle
-  typeset -g POWERLEVEL9K_VCS_CONFLICTED_BACKGROUND=$oasis_error
-  typeset -g POWERLEVEL9K_VCS_CONFLICTED_FOREGROUND=$oasis_mantle
-  typeset -g POWERLEVEL9K_VCS_LOADING_BACKGROUND=$oasis_secondary
-  typeset -g POWERLEVEL9K_VCS_LOADING_FOREGROUND=$oasis_mantle
-  typeset -g POWERLEVEL9K_VCS_VISUAL_IDENTIFIER_COLOR=$oasis_mantle
+  typeset -g POWERLEVEL9K_VCS_CLEAN_BACKGROUND=$theme_secondary
+  typeset -g POWERLEVEL9K_VCS_CLEAN_FOREGROUND=$theme_base
+  typeset -g POWERLEVEL9K_VCS_MODIFIED_BACKGROUND=$theme_secondary
+  typeset -g POWERLEVEL9K_VCS_MODIFIED_FOREGROUND=$theme_base
+  typeset -g POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND=$theme_secondary
+  typeset -g POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND=$theme_base
+  typeset -g POWERLEVEL9K_VCS_CONFLICTED_BACKGROUND=$theme_error
+  typeset -g POWERLEVEL9K_VCS_CONFLICTED_FOREGROUND=$theme_base
+  typeset -g POWERLEVEL9K_VCS_LOADING_BACKGROUND=$theme_secondary
+  typeset -g POWERLEVEL9K_VCS_LOADING_FOREGROUND=$theme_base
+  typeset -g POWERLEVEL9K_VCS_VISUAL_IDENTIFIER_COLOR=$theme_base
 
-  typeset -g POWERLEVEL9K_PROMPT_CHAR_OK_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=$oasis_primary
-  typeset -g POWERLEVEL9K_PROMPT_CHAR_ERROR_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=$oasis_error
+  typeset -g POWERLEVEL9K_PROMPT_CHAR_OK_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=$theme_primary
+  typeset -g POWERLEVEL9K_PROMPT_CHAR_ERROR_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=$theme_error
 
-  typeset -g POWERLEVEL9K_STATUS_OK_FOREGROUND=$oasis_primary
-  typeset -g POWERLEVEL9K_STATUS_OK_BACKGROUND=$oasis_mantle
-  typeset -g POWERLEVEL9K_STATUS_OK_PIPE_FOREGROUND=$oasis_primary
-  typeset -g POWERLEVEL9K_STATUS_OK_PIPE_BACKGROUND=$oasis_mantle
-  typeset -g POWERLEVEL9K_STATUS_ERROR_FOREGROUND=$oasis_text
-  typeset -g POWERLEVEL9K_STATUS_ERROR_BACKGROUND=$oasis_error
-  typeset -g POWERLEVEL9K_STATUS_ERROR_SIGNAL_FOREGROUND=$oasis_text
-  typeset -g POWERLEVEL9K_STATUS_ERROR_SIGNAL_BACKGROUND=$oasis_error
-  typeset -g POWERLEVEL9K_STATUS_ERROR_PIPE_FOREGROUND=$oasis_text
-  typeset -g POWERLEVEL9K_STATUS_ERROR_PIPE_BACKGROUND=$oasis_error
+  typeset -g POWERLEVEL9K_STATUS_OK_FOREGROUND=$theme_primary
+  typeset -g POWERLEVEL9K_STATUS_OK_BACKGROUND=$theme_mantle
+  typeset -g POWERLEVEL9K_STATUS_OK_PIPE_FOREGROUND=$theme_primary
+  typeset -g POWERLEVEL9K_STATUS_OK_PIPE_BACKGROUND=$theme_mantle
+  typeset -g POWERLEVEL9K_STATUS_ERROR_FOREGROUND=$theme_text
+  typeset -g POWERLEVEL9K_STATUS_ERROR_BACKGROUND=$theme_error
+  typeset -g POWERLEVEL9K_STATUS_ERROR_SIGNAL_FOREGROUND=$theme_text
+  typeset -g POWERLEVEL9K_STATUS_ERROR_SIGNAL_BACKGROUND=$theme_error
+  typeset -g POWERLEVEL9K_STATUS_ERROR_PIPE_FOREGROUND=$theme_text
+  typeset -g POWERLEVEL9K_STATUS_ERROR_PIPE_BACKGROUND=$theme_error
 
-  typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_FOREGROUND=$oasis_mantle
-  typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_BACKGROUND=$oasis_primary
-  typeset -g POWERLEVEL9K_BACKGROUND_JOBS_FOREGROUND=$oasis_secondary
-  typeset -g POWERLEVEL9K_BACKGROUND_JOBS_BACKGROUND=$oasis_mantle
-  typeset -g POWERLEVEL9K_DIRENV_FOREGROUND=$oasis_warning
-  typeset -g POWERLEVEL9K_DIRENV_BACKGROUND=$oasis_mantle
+  typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_FOREGROUND=$theme_base
+  typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_BACKGROUND=$theme_primary
+  typeset -g POWERLEVEL9K_BACKGROUND_JOBS_FOREGROUND=$theme_secondary
+  typeset -g POWERLEVEL9K_BACKGROUND_JOBS_BACKGROUND=$theme_mantle
+  typeset -g POWERLEVEL9K_DIRENV_FOREGROUND=$theme_warning
+  typeset -g POWERLEVEL9K_DIRENV_BACKGROUND=$theme_mantle
 
-  typeset -g POWERLEVEL9K_ASDF_FOREGROUND=$oasis_primary
-  typeset -g POWERLEVEL9K_ASDF_BACKGROUND=$oasis_surface
-  typeset -g POWERLEVEL9K_VIRTUALENV_FOREGROUND=$oasis_primary
-  typeset -g POWERLEVEL9K_VIRTUALENV_BACKGROUND=$oasis_surface
-  typeset -g POWERLEVEL9K_ANACONDA_FOREGROUND=$oasis_primary
-  typeset -g POWERLEVEL9K_ANACONDA_BACKGROUND=$oasis_surface
-  typeset -g POWERLEVEL9K_PYENV_FOREGROUND=$oasis_primary
-  typeset -g POWERLEVEL9K_PYENV_BACKGROUND=$oasis_surface
-  typeset -g POWERLEVEL9K_NVM_FOREGROUND=$oasis_primary
-  typeset -g POWERLEVEL9K_NVM_BACKGROUND=$oasis_surface
-  typeset -g POWERLEVEL9K_NODEENV_FOREGROUND=$oasis_primary
-  typeset -g POWERLEVEL9K_NODEENV_BACKGROUND=$oasis_surface
+  typeset -g POWERLEVEL9K_ASDF_FOREGROUND=$theme_primary
+  typeset -g POWERLEVEL9K_ASDF_BACKGROUND=$theme_surface
+  typeset -g POWERLEVEL9K_VIRTUALENV_FOREGROUND=$theme_primary
+  typeset -g POWERLEVEL9K_VIRTUALENV_BACKGROUND=$theme_surface
+  typeset -g POWERLEVEL9K_ANACONDA_FOREGROUND=$theme_primary
+  typeset -g POWERLEVEL9K_ANACONDA_BACKGROUND=$theme_surface
+  typeset -g POWERLEVEL9K_PYENV_FOREGROUND=$theme_primary
+  typeset -g POWERLEVEL9K_PYENV_BACKGROUND=$theme_surface
+  typeset -g POWERLEVEL9K_NVM_FOREGROUND=$theme_primary
+  typeset -g POWERLEVEL9K_NVM_BACKGROUND=$theme_surface
+  typeset -g POWERLEVEL9K_NODEENV_FOREGROUND=$theme_primary
+  typeset -g POWERLEVEL9K_NODEENV_BACKGROUND=$theme_surface
 
-  typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=$oasis_warning
-  typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=$oasis_mantle
-  typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_FOREGROUND=$oasis_warning
-  typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_BACKGROUND=$oasis_mantle
-  typeset -g POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND=$oasis_text
-  typeset -g POWERLEVEL9K_CONTEXT_ROOT_BACKGROUND=$oasis_error
+  typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=$theme_warning
+  typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=$theme_mantle
+  typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_FOREGROUND=$theme_warning
+  typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_BACKGROUND=$theme_mantle
+  typeset -g POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND=$theme_text
+  typeset -g POWERLEVEL9K_CONTEXT_ROOT_BACKGROUND=$theme_error
 
-  typeset -g POWERLEVEL9K_TIME_FOREGROUND=$oasis_mantle
-  typeset -g POWERLEVEL9K_TIME_BACKGROUND=$oasis_secondary
+  typeset -g POWERLEVEL9K_TIME_FOREGROUND=$theme_base
+  typeset -g POWERLEVEL9K_TIME_BACKGROUND=$theme_secondary
 
   typeset -g POWERLEVEL9K_TRANSIENT_PROMPT=always
 

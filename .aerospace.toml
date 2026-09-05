@@ -119,7 +119,7 @@ gaps.outer.right =      10
     # 'tell application "Terminal" to tell (do script) to activate' '''
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#layout
-    alt-slash = 'layout tiles horizontal vertical'
+    alt-space = 'layout tiles horizontal vertical'
     alt-comma = 'layout accordion horizontal vertical'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#focus

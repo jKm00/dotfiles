@@ -1106,18 +1106,22 @@ require("lazy").setup({
 	},
 
 	{
-		"uhs-robert/oasis.nvim",
+		"catppuccin/nvim",
+		name = "catppuccin",
 		priority = 1000, -- Make sure to load this before all the other start plugins.
 		config = function()
-			require("oasis").setup({
-				style = "twilight",
-				transparent = true,
+			local theme = require("custom.theme")
+
+			require("catppuccin").setup({
+				flavour = theme.flavour,
+				transparent_background = theme.transparent,
 				styles = {
-					italic = false,
+					comments = {},
+					conditionals = {},
 				},
 			})
 
-			vim.cmd.colorscheme("oasis")
+			vim.cmd.colorscheme(theme.colorscheme)
 
 			local transparent_groups = {
 				"Normal",

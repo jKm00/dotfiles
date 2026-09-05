@@ -46,23 +46,23 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     float innerFrost = 1.0 - smoothstep(-borderWidth * 2.5, -borderWidth * 0.4, sdf);
 
     vec4 blurred = blurInput(uv, 1.0 / iResolution.xy);
-    vec3 twilightPrimary = vec3(0.97, 0.60, 0.49);
-    vec3 twilightLavender = vec3(0.82, 0.68, 1.0);
-    vec3 twilightFrost = vec3(0.51, 0.75, 1.0);
-    vec3 twilightDeep = vec3(0.15, 0.10, 0.20);
+    vec3 mochaPrimary = vec3(0.80, 0.65, 0.97);
+    vec3 mochaLavender = vec3(0.71, 0.75, 1.0);
+    vec3 mochaFrost = vec3(0.58, 0.89, 0.84);
+    vec3 mochaDeep = vec3(0.09, 0.09, 0.15);
 
     float grain = noise(fragCoord * 0.75 + iTime * 8.0) - 0.5;
-    vec3 frosted = mix(blurred.rgb, twilightFrost, 0.18);
-    frosted = mix(frosted, twilightLavender, 0.12) + grain * 0.03;
+    vec3 frosted = mix(blurred.rgb, mochaFrost, 0.18);
+    frosted = mix(frosted, mochaLavender, 0.12) + grain * 0.03;
 
     vec3 color = base.rgb;
     color = mix(color, frosted, innerFrost * 0.34);
-    color = mix(color, twilightLavender, outerGlow * 0.12);
-    color = mix(color, twilightPrimary, outerGlow * 0.08);
+    color = mix(color, mochaLavender, outerGlow * 0.12);
+    color = mix(color, mochaPrimary, outerGlow * 0.08);
 
-    vec3 borderColor = mix(twilightPrimary, twilightLavender, 0.25);
-    borderColor = mix(borderColor, twilightFrost, 0.12);
-    color = mix(color, mix(borderColor, twilightDeep, 0.08), border * 0.82);
+    vec3 borderColor = mix(mochaPrimary, mochaLavender, 0.25);
+    borderColor = mix(borderColor, mochaFrost, 0.12);
+    color = mix(color, mix(borderColor, mochaDeep, 0.08), border * 0.82);
 
     fragColor = vec4(color, base.a);
 }

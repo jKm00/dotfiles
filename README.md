@@ -13,17 +13,17 @@ into `$HOME`. Editing either side edits the same file. Throughout this document
 | Config        | What it does                                                              | Path                 |
 | ------------- | ------------------------------------------------------------------------- | -------------------- |
 | Ghostty       | Terminal — theme, wallpaper, opacity, shaders                             | `.config/ghostty`    |
-| tmux          | Multiplexer — Oasis Twilight theme, Spotify integration                   | `.config/tmux`       |
+| tmux          | Multiplexer — Catppuccin Mocha theme, Spotify integration                 | `.config/tmux`       |
 | zsh           | Shell config and aliases                                                  | `.zshrc`             |
-| Powerlevel10k | Prompt layout and Oasis Twilight colors                                   | `.p10k.zsh`          |
-| Nvim          | Editor — Oasis theme, opencode.nvim integration                          | `.config/nvim`       |
+| Powerlevel10k | Prompt layout and active theme colors                                     | `.p10k.zsh`          |
+| Nvim          | Editor — Catppuccin theme, opencode.nvim integration                      | `.config/nvim`       |
 | opencode      | AI TUI — theme, plugins, AGENTS.md, slash commands                        | `.config/opencode`   |
 | AeroSpace     | Tiling window manager — keybinds, SketchyBar hook                         | `.aerospace.toml`    |
 | SketchyBar    | Status bar — workspaces, app icons, notification badges, clock/battery    | `.config/sketchybar` |
 | wallpapers    | Shared terminal wallpaper assets                                          | `.config/wallpapers` |
 | VS Code       | Settings, keybindings, extensions list                                    | `vscode`             |
 
-The theme direction is **Oasis Twilight** across Ghostty, tmux, Nvim,
+The theme direction is **Catppuccin Mocha** across Ghostty, tmux, Nvim,
 Powerlevel10k, opencode and SketchyBar.
 
 ## Install
@@ -38,8 +38,12 @@ brew install ghostty tmux neovim lazygit jq
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 brew install powerlevel10k zsh-autosuggestions zsh-syntax-highlighting
 
-# tmux plugin manager (then run `prefix + I` inside tmux to install plugins)
+# tmux plugin manager (then run `prefix + I` inside tmux to install TPM plugins)
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+# tmux Catppuccin theme (manual install; recommended upstream)
+mkdir -p ~/.config/tmux/plugins/catppuccin
+git clone -b v2.3.0 https://github.com/catppuccin/tmux.git ~/.config/tmux/plugins/catppuccin/tmux
 
 # Window manager, status bar, icon font
 brew install --cask nikitabobko/tap/aerospace
@@ -135,8 +139,8 @@ The `hooks` directory is symlinked, so the script is picked up automatically.
 bar. Together they give:
 
 - **Left:** one rounded chip per AeroSpace workspace, containing the workspace ID
-  plus an icon for each app it holds. The focused workspace is highlighted in
-  Oasis coral. Apps with a Dock notification badge show the **count next to their
+  plus an icon for each app it holds. The focused workspace is highlighted with
+  the active theme accent. Apps with a Dock notification badge show the **count next to their
   icon** — so the Dock can stay hidden. Click any chip to focus that workspace.
 - **Right:** clock, battery, volume, and the active keyboard layout (`EN`/`NO`).
 
@@ -199,7 +203,7 @@ AeroSpace has `start-at-login = true`; enable it once by launching the app.
   of workspaces/apps changes; badge counts and the focus highlight refresh every
   run, so the 3s poll doesn't flicker.
 - `plugins/{front_app,clock,battery,volume,keyboard}.sh` handle the other items;
-  `colors.sh` holds the Oasis Twilight palette (`0xAARRGGBB`) sourced by all.
+  `colors.sh` holds the Catppuccin Mocha palette (`0xAARRGGBB`) sourced by all.
 
 **Swift helpers** (`helpers/*.swift`, compiled on demand in the background;
 binaries git-ignored, sources tracked):

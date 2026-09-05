@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SketchyBar config — oasis.nvim "twilight" theme, AeroSpace-driven.
+# SketchyBar config — active theme, AeroSpace-driven.
 # Workspaces show the app icons they contain; right side has clock/battery/volume.
 
 CONFIG_DIR="$HOME/.config/sketchybar"

@@ -8,7 +8,7 @@ if [ "$SENDER" = "front_app_switched" ]; then
   sketchybar --set "$NAME" \
     icon="$icon_result" \
     icon.font="sketchybar-app-font:Regular:16.0" \
-    icon.color="$CORAL" \
+    icon.color="$ACCENT" \
     label="$INFO" \
     label.color="$FG_STRONG"
 fi
