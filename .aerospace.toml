@@ -148,67 +148,23 @@ gaps.outer.right =      10
     alt-1 = 'workspace 1'
     alt-2 = 'workspace 2'
     alt-3 = 'workspace 3'
-    alt-4 = 'workspace 4'
-    alt-5 = 'workspace 5'
-    alt-6 = 'workspace 6'
-    alt-7 = 'workspace 7'
-    alt-8 = 'workspace 8'
-    alt-9 = 'workspace 9'
-    alt-a = 'workspace A' # In your config, you can drop workspace bindings that you don't need
-    alt-b = 'workspace B'
-    alt-c = 'workspace C'
-    alt-d = 'workspace D'
-    alt-e = 'workspace E'
-    alt-f = 'workspace F'
-    alt-g = 'workspace G'
-    alt-i = 'workspace I'
-    alt-m = 'workspace M'
-    alt-n = 'workspace N'
-    alt-o = 'workspace O'
-    alt-p = 'workspace P'
-    alt-q = 'workspace Q'
-    alt-r = 'workspace R'
-    alt-s = 'workspace S'
-    alt-t = 'workspace T'
-    alt-u = 'workspace U'
-    alt-v = 'workspace V'
-    alt-w = 'workspace W'
-    alt-x = 'workspace X'
-    alt-y = 'workspace Y'
-    alt-z = 'workspace Z'
+    alt-c = 'workspace C' # Coding
+    alt-b = 'workspace B' # Browser 
+    alt-m = 'workspace M' # Music
+    alt-d = 'workspace D' # Discord 
+    alt-o = 'workspace O' # Outlook 
+    alt-s = 'workspace S' # Slack / Teams
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
     alt-shift-1 = 'move-node-to-workspace --focus-follows-window 1'
     alt-shift-2 = 'move-node-to-workspace --focus-follows-window 2'
     alt-shift-3 = 'move-node-to-workspace --focus-follows-window 3'
-    alt-shift-4 = 'move-node-to-workspace --focus-follows-window 4'
-    alt-shift-5 = 'move-node-to-workspace --focus-follows-window 5'
-    alt-shift-6 = 'move-node-to-workspace --focus-follows-window 6'
-    alt-shift-7 = 'move-node-to-workspace --focus-follows-window 7'
-    alt-shift-8 = 'move-node-to-workspace --focus-follows-window 8'
-    alt-shift-9 = 'move-node-to-workspace --focus-follows-window 9'
-    alt-shift-a = 'move-node-to-workspace --focus-follows-window A'
-    alt-shift-b = 'move-node-to-workspace --focus-follows-window B'
     alt-shift-c = 'move-node-to-workspace --focus-follows-window C'
-    alt-shift-d = 'move-node-to-workspace --focus-follows-window D'
-    alt-shift-e = 'move-node-to-workspace --focus-follows-window E'
-    alt-shift-f = 'move-node-to-workspace --focus-follows-window F'
-    alt-shift-g = 'move-node-to-workspace --focus-follows-window G'
-    alt-shift-i = 'move-node-to-workspace --focus-follows-window I'
+    alt-shift-b = 'move-node-to-workspace --focus-follows-window B'
     alt-shift-m = 'move-node-to-workspace --focus-follows-window M'
-    alt-shift-n = 'move-node-to-workspace --focus-follows-window N'
+    alt-shift-d = 'move-node-to-workspace --focus-follows-window D'
     alt-shift-o = 'move-node-to-workspace --focus-follows-window O'
-    alt-shift-p = 'move-node-to-workspace --focus-follows-window P'
-    alt-shift-q = 'move-node-to-workspace --focus-follows-window Q'
-    alt-shift-r = 'move-node-to-workspace --focus-follows-window R'
     alt-shift-s = 'move-node-to-workspace --focus-follows-window S'
-    alt-shift-t = 'move-node-to-workspace --focus-follows-window T'
-    alt-shift-u = 'move-node-to-workspace --focus-follows-window U'
-    alt-shift-v = 'move-node-to-workspace --focus-follows-window V'
-    alt-shift-w = 'move-node-to-workspace --focus-follows-window W'
-    alt-shift-x = 'move-node-to-workspace --focus-follows-window X'
-    alt-shift-y = 'move-node-to-workspace --focus-follows-window Y'
-    alt-shift-z = 'move-node-to-workspace --focus-follows-window Z'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
     alt-tab = 'workspace-back-and-forth'
@@ -236,3 +192,31 @@ run = 'layout floating'
 [[on-window-detected]]
 if.app-id = 'com.apple.systempreferences'
 run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.mitchellh.ghostty'
+run = 'move-node-to-workspace C'
+
+[[on-window-detected]]
+if.app-id = 'com.google.Chrome'
+run = 'move-node-to-workspace B'
+
+[[on-window-detected]]
+if.app-id = 'com.spotify.client'
+run = 'move-node-to-workspace M'
+
+[[on-window-detected]]
+if.app-id = 'com.hnc.Discord'
+run = 'move-node-to-workspace D'
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.Outlook'
+run = 'move-node-to-workspace O'
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.teams2'
+run = 'move-node-to-workspace S'
+
+[[on-window-detected]]
+if.app-id = 'com.tinyspeck.slackmacgap'
+run = 'move-node-to-workspace S'
