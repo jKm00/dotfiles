@@ -32,7 +32,7 @@ On a fresh machine, clone the repo, then install tools and link the configs.
 
 ```sh
 # Base tools
-brew install ghostty tmux neovim lazygit jq
+brew install ghostty tmux neovim lazygit jq bat
 
 # Shell and prompt
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"

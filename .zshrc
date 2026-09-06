@@ -39,6 +39,7 @@ fi
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export PATH="$HOME/.cargo/bin:$PATH"
 
 export PGUSER=postgres
 
@@ -66,14 +67,13 @@ alias sp="spotify_player"
 alias oc="opencode"
 alias jarvis="opencode --port"
 
+if command -v bat &>/dev/null; then
+    alias cat="bat"
+fi
+
 # Utils commands
 whoisonport() { sudo lsof -i :"$1" } # whoisonport 3000
 killport() { sudo kill -9 $(sudo lsof -t -i :"$1") } # killport 3000
-
-# Machine-specific config (work vs personal). Not tracked in the repo.
-[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
-export PATH="$HOME/.cargo/bin:$PATH"
-
 swagger() {
   if ! command -v openapi-tui &>/dev/null; then
     echo "openapi-tui not installed — run: cargo install openapi-tui"
@@ -81,3 +81,6 @@ swagger() {
   fi
   openapi-tui "$@"
 }
+
+# Machine-specific config (work vs personal). Not tracked in the repo.
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
