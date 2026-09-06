@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # SketchyBar config — oasis.nvim "twilight" theme, AeroSpace-driven.
-# Workspaces show the app icons they contain; right side has clock/battery/volume.
+# Workspaces show the app icons they contain; right side has clock/battery/volume/wifi.
 
 CONFIG_DIR="$HOME/.config/sketchybar"
 PLUGIN_DIR="$CONFIG_DIR/plugins"
@@ -113,6 +113,15 @@ sketchybar --add item clock right \
     background.color="$TRANSPARENT" \
     script="$PLUGIN_DIR/volume.sh" \
   --subscribe volume volume_change \
+  --add item wifi right \
+  --set wifi \
+    update_freq=30 \
+    icon.color="$BLUE" \
+    background.color="$TRANSPARENT" \
+    script="$PLUGIN_DIR/wifi.sh" \
+    click_script="open 'x-apple.systempreferences:com.apple.Wi-Fi-Settings.extension'" \
+    right_click_script="$PLUGIN_DIR/wifi.sh toggle" \
+  --subscribe wifi wifi_change system_woke \
   --add item keyboard right \
   --set keyboard \
     update_freq=10 \
