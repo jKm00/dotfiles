@@ -17,6 +17,7 @@ into `$HOME`. Editing either side edits the same file. Throughout this document
 | zsh           | Shell config and aliases                                                  | `.zshrc`             |
 | Powerlevel10k | Prompt layout and Oasis Twilight colors                                   | `.p10k.zsh`          |
 | Nvim          | Editor — Oasis theme, opencode.nvim integration                          | `.config/nvim`       |
+| bat           | Syntax-highlighting pager — Oasis Twilight theme                         | `.config/bat`        |
 | opencode      | AI TUI — theme, plugins, AGENTS.md, slash commands                        | `.config/opencode`   |
 | Chrome        | Browser — Oasis Twilight unpacked theme                                   | `chrome-themes`      |
 | AeroSpace     | Tiling window manager — keybinds, SketchyBar hook                         | `.aerospace.toml`    |
@@ -25,7 +26,7 @@ into `$HOME`. Editing either side edits the same file. Throughout this document
 | VS Code       | Settings, keybindings, extensions list                                    | `vscode`             |
 
 The theme direction is **Oasis Twilight** across Ghostty, tmux, Nvim,
-Powerlevel10k, opencode and SketchyBar.
+Powerlevel10k, bat, opencode and SketchyBar.
 
 ## Chrome theme
 
@@ -57,8 +58,8 @@ brew install --cask font-hack-nerd-font
 ```
 
 Then create the symlinks (see [Symlinks](#symlinks)) and follow the per-component
-first-run steps: [Spotify](#spotify-tmux), [AeroSpace + SketchyBar](#aerospace--sketchybar),
-[opencode](#opencode).
+first-run steps: [bat](#bat), [Spotify](#spotify-tmux),
+[AeroSpace + SketchyBar](#aerospace--sketchybar), [opencode](#opencode).
 
 ## Symlinks
 
@@ -70,6 +71,7 @@ Whole-directory / file links:
 
 ```text
 ~/.config/nvim        -> <repo>/.config/nvim
+~/.config/bat         -> <repo>/.config/bat
 ~/.config/ghostty     -> <repo>/.config/ghostty
 ~/.config/sketchybar  -> <repo>/.config/sketchybar
 ~/.config/wallpapers  -> <repo>/.config/wallpapers
@@ -102,6 +104,15 @@ Not tracked (generated, downloaded, compiled, or machine-local):
 ~/Library/Fonts/sketchybar-app-font.ttf  (installed; see SketchyBar prerequisites)
 ~/.config/sketchybar/helpers/keyboard_listener   (compiled from tracked .swift)
 ~/.config/sketchybar/helpers/dock_badges          (compiled from tracked .swift)
+```
+
+## bat
+
+After linking `~/.config/bat`, rebuild bat's cache so the custom Oasis Twilight
+theme is registered:
+
+```sh
+bat cache --build
 ```
 
 ## Spotify (tmux)
