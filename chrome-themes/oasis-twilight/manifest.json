@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "Oasis Twilight",
+  "short_name": "Oasis Twilight",
+  "version": "1.0.0",
+  "description": "A warm twilight Chrome theme matching the Oasis Twilight dotfiles palette.",
+  "theme": {
+    "colors": {
+      "frame": [27, 19, 32],
+      "frame_inactive": [22, 15, 27],
+      "toolbar": [27, 19, 32],
+      "tab_text": [240, 228, 242],
+      "tab_background_text": [198, 149, 255],
+      "bookmark_text": [240, 228, 242],
+      "ntp_background": [27, 19, 32],
+      "ntp_text": [240, 228, 242],
+      "button_background": [54, 35, 67],
+      "toolbar_button_icon": [251, 192, 170],
+      "omnibox_background": [54, 35, 67],
+      "omnibox_text": [240, 228, 242],
+      "omnibox_selected_background": [210, 173, 255],
+      "omnibox_selected_text": [27, 19, 32],
+      "control_background": [54, 35, 67]
+    },
+    "tints": {
+      "buttons": [0.04, 0.55, 0.82]
+    },
+    "properties": {
+      "color_scheme": "dark"
+    }
+  }
+}

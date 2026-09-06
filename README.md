@@ -18,6 +18,7 @@ into `$HOME`. Editing either side edits the same file. Throughout this document
 | Powerlevel10k | Prompt layout and Oasis Twilight colors                                   | `.p10k.zsh`          |
 | Nvim          | Editor — Oasis theme, opencode.nvim integration                          | `.config/nvim`       |
 | opencode      | AI TUI — theme, plugins, AGENTS.md, slash commands                        | `.config/opencode`   |
+| Chrome        | Browser — Oasis Twilight unpacked theme                                   | `chrome-themes`      |
 | AeroSpace     | Tiling window manager — keybinds, SketchyBar hook                         | `.aerospace.toml`    |
 | SketchyBar    | Status bar — workspaces, app icons, notification badges, clock/battery    | `.config/sketchybar` |
 | wallpapers    | Shared terminal wallpaper assets                                          | `.config/wallpapers` |
@@ -25,6 +26,14 @@ into `$HOME`. Editing either side edits the same file. Throughout this document
 
 The theme direction is **Oasis Twilight** across Ghostty, tmux, Nvim,
 Powerlevel10k, opencode and SketchyBar.
+
+## Chrome theme
+
+The Oasis Twilight Chrome theme is an unpacked extension in
+`chrome-themes/oasis-twilight`.
+
+To apply it, open `chrome://extensions`, enable `Developer mode`, click
+`Load unpacked`, then select `chrome-themes/oasis-twilight`.
 
 ## Install
 
