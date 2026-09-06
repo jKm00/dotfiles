@@ -5,13 +5,11 @@ font-thicken = true
 
 
 # Theme 
-background = #0b1020
-background-image = ~/.config/wallpapers/bg-blurred-darker.png
-# background-image = ~/.config/wallpapers/darkpink.png
 background-image-fit = cover
 background-image-position = center
-# background-image-opacity = 0.35
-background-image-opacity = 0.35
+background = #1B1320
+background-image = ~/.config/wallpapers/bg-blurred-darker.png
+background-image-opacity = 0.90
 
 theme = tokyonight
 
