@@ -10,20 +10,20 @@ into `$HOME`. Editing either side edits the same file. Throughout this document
 
 ## What's inside
 
-| Config        | What it does                                                              | Path                 |
-| ------------- | ------------------------------------------------------------------------- | -------------------- |
-| Ghostty       | Terminal — theme, wallpaper, opacity, shaders                             | `.config/ghostty`    |
-| tmux          | Multiplexer — Oasis Twilight theme, Spotify integration                   | `.config/tmux`       |
-| zsh           | Shell config and aliases                                                  | `.zshrc`             |
-| Powerlevel10k | Prompt layout and Oasis Twilight colors                                   | `.p10k.zsh`          |
-| Nvim          | Editor — Oasis theme, opencode.nvim integration                          | `.config/nvim`       |
-| bat           | Syntax-highlighting pager — Oasis Twilight theme                         | `.config/bat`        |
-| opencode      | AI TUI — theme, plugins, AGENTS.md, slash commands                        | `.config/opencode`   |
-| Chrome        | Browser — Oasis Twilight unpacked theme                                   | `chrome-themes`      |
-| AeroSpace     | Tiling window manager — keybinds, SketchyBar hook                         | `.aerospace.toml`    |
-| SketchyBar    | Status bar — workspaces, app icons, notification badges, clock/battery    | `.config/sketchybar` |
-| wallpapers    | Shared terminal wallpaper assets                                          | `.config/wallpapers` |
-| VS Code       | Settings, keybindings, extensions list                                    | `vscode`             |
+| Config        | What it does                                                           | Path                 |
+| ------------- | ---------------------------------------------------------------------- | -------------------- |
+| Ghostty       | Terminal — theme, wallpaper, opacity, shaders                          | `.config/ghostty`    |
+| tmux          | Multiplexer — Oasis Twilight theme, Spotify integration                | `.config/tmux`       |
+| zsh           | Shell config and aliases                                               | `.zshrc`             |
+| Powerlevel10k | Prompt layout and Oasis Twilight colors                                | `.p10k.zsh`          |
+| Nvim          | Editor — Oasis theme, opencode.nvim integration                        | `.config/nvim`       |
+| bat           | Syntax-highlighting pager — Oasis Twilight theme                       | `.config/bat`        |
+| opencode      | AI TUI — theme, plugins, AGENTS.md, slash commands                     | `.config/opencode`   |
+| Chrome        | Browser — Oasis Twilight unpacked theme                                | `chrome-themes`      |
+| AeroSpace     | Tiling window manager — keybinds, SketchyBar hook                      | `.aerospace.toml`    |
+| SketchyBar    | Status bar — workspaces, app icons, notification badges, clock/battery | `.config/sketchybar` |
+| wallpapers    | Shared terminal wallpaper assets                                       | `.config/wallpapers` |
+| VS Code       | Settings, keybindings, extensions list                                 | `vscode`             |
 
 The theme direction is **Oasis Twilight** across Ghostty, tmux, Nvim,
 Powerlevel10k, bat, opencode and SketchyBar.
@@ -42,7 +42,7 @@ On a fresh machine, clone the repo, then install tools and link the configs.
 
 ```sh
 # Base tools
-brew install ghostty tmux neovim lazygit jq bat
+brew install ghostty tmux neovim lazygit jq bat thefuck eze
 
 # Shell and prompt
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -184,13 +184,13 @@ Installed via [Install](#install): `aerospace`, `sketchybar`,
 
 ### macOS settings
 
-- **Displays have separate Spaces** ON (default) — *Settings → Desktop & Dock*.
+- **Displays have separate Spaces** ON (default) — _Settings → Desktop & Dock_.
   AeroSpace requires it.
-- **Hide the menu bar** — *Settings → Control Center → Automatically hide and
-  show the menu bar → Always*.
-- **Auto-hide the Dock** — *Settings → Desktop & Dock* — since notification
+- **Hide the menu bar** — _Settings → Control Center → Automatically hide and
+  show the menu bar → Always_.
+- **Auto-hide the Dock** — _Settings → Desktop & Dock_ — since notification
   badges now surface in the bar.
-- **Accessibility grants** (*Settings → Privacy & Security → Accessibility*):
+- **Accessibility grants** (_Settings → Privacy & Security → Accessibility_):
   - **AeroSpace** — required to manage windows (prompts on first launch).
   - **sketchybar** (`/opt/homebrew/bin/sketchybar`) — required to read Dock
     notification badges. sketchybar spawns the badge reader, so macOS attributes

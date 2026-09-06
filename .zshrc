@@ -82,5 +82,9 @@ swagger() {
   openapi-tui "$@"
 }
 
+# TheFuck
+eval $(thefuck --alias)
+eval $(thefuck --alias fk)
+
 # Machine-specific config (work vs personal). Not tracked in the repo.
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
