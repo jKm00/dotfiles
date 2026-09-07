@@ -921,6 +921,27 @@ require("lazy").setup({
 					end,
 				},
 			})
+
+			-- WORKAROUND (Kotlin/kotlin-lsp#271): JetBrains ships intellij-server
+			-- as time-limited EAP builds, and the version Mason installs from the
+			-- GitHub releases is regularly past its hardcoded expiry ("This build
+			-- of intellij-server has expired"), so the server exits immediately.
+			-- The VS Code Marketplace extension (JetBrains.kotlin-server) ships a
+			-- newer, non-expired build. We extract its bundled `intellij-server`
+			-- to ~/.local/share/kotlin-lsp/server and prefer it over Mason's copy.
+			--
+			-- To refresh when it expires again: download the latest platform vsix
+			-- (e.g. darwin-arm64) and re-extract, e.g.
+			--   url="https://marketplace.visualstudio.com/_apis/public/gallery/publishers/JetBrains/vsextensions/kotlin-server/<VERSION>/vspackage?targetPlatform=darwin-arm64"
+			--   curl -sL "$url" | gunzip > ext.vsix && unzip -oq ext.vsix -d ext
+			--   rm -rf ~/.local/share/kotlin-lsp/server
+			--   cp -R ext/extension/server ~/.local/share/kotlin-lsp/server
+			-- (list versions via the Marketplace extensionquery API).
+			local marketplace_server = vim.fn.expand("~/.local/share/kotlin-lsp/server/bin/intellij-server")
+			if vim.fn.executable(marketplace_server) == 1 then
+				vim.lsp.config("kotlin_lsp", { cmd = { marketplace_server, "--stdio" } })
+			end
+
 			vim.lsp.enable("kotlin_lsp")
 		end,
 	},
@@ -957,15 +978,51 @@ require("lazy").setup({
 					liquid = { "prettier" },
 					lua = { "stylua" },
 					python = { "ruff", "black" },
+					-- The dnb/savings server-side codebase has no ktlint/spotless
+					-- config; it formats with IntelliJ IDEA's default formatter.
+					-- The JetBrains `kotlin_lsp` server IS that same IntelliJ
+					-- engine, so LSP formatting matches the codebase exactly.
+					--
+					-- format_on_save below uses lsp_format = "prefer" for kotlin:
+					-- format via kotlin_lsp when a client is attached, otherwise
+					-- fall back to this ktlint entry. ktlint is a linter, so even
+					-- in `intellij_idea` style it applies some rewrites IntelliJ
+					-- won't (e.g. block -> expression body); it's only the
+					-- stopgap for when the LSP isn't available.
 					kotlin = { "ktlint" },
 					terraform = { "terraform_fmt" },
 					["terraform-vars"] = { "terraform_fmt" },
 				},
-				format_on_save = {
-					lsp_fallback = true,
-					async = false,
-					timeout_ms = 3000,
+				formatters = {
+					-- ktlint 1.8 removed the `--code-style` flag, so the IntelliJ
+					-- style is supplied via a default .editorconfig passed with
+					-- `--editorconfig` (used only for properties the project's own
+					-- .editorconfig doesn't set). `--stdin-path` gives ktlint the
+					-- buffer's real path so it still discovers the repo's
+					-- .editorconfig (indent size, import layout).
+					ktlint = {
+						-- ktlint exits 1 when unfixable lint violations remain
+						-- (e.g. standard:filename) even though it still wrote the
+						-- correctly formatted code to stdout. Treat 1 as success so
+						-- conform applies the formatting instead of discarding it.
+						exit_codes = { 0, 1 },
+						prepend_args = function(_, ctx)
+							return {
+								"--stdin-path=" .. ctx.filename,
+								"--editorconfig=" .. vim.fn.stdpath("config") .. "/ktlint-default.editorconfig",
+							}
+						end,
+					},
 				},
+				format_on_save = function(bufnr)
+					-- Kotlin: prefer the IntelliJ-based kotlin_lsp, fall back to
+					-- ktlint. Everything else keeps the previous behavior (run the
+					-- configured formatter, else the LSP formatter).
+					if vim.bo[bufnr].filetype == "kotlin" then
+						return { timeout_ms = 3000, async = false, lsp_format = "prefer" }
+					end
+					return { timeout_ms = 3000, async = false, lsp_format = "fallback" }
+				end,
 			})
 		end,
 		-- opts = {

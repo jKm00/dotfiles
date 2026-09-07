@@ -1,0 +1,14 @@
+# Default .editorconfig passed to ktlint via `--editorconfig`.
+#
+# ktlint only uses a property from this file when the project's own
+# .editorconfig (on the path to the source file) does not set it. The
+# dnb/savings server-side codebase has no ktlint/spotless config and formats
+# with IntelliJ IDEA's default formatter. ktlint otherwise defaults to its
+# `ktlint_official` style, which disagrees with IntelliJ and rewrites code on
+# save. `intellij_idea` mirrors IntelliJ's default formatter as closely as a
+# CLI linter can.
+#
+# NOTE: ktlint here is only a *fallback* used when the JetBrains kotlin_lsp
+# (IntelliJ's own engine) isn't available to format. See init.lua.
+[*.{kt,kts}]
+ktlint_code_style = intellij_idea
