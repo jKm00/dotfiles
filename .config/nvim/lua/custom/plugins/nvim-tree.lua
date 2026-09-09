@@ -128,6 +128,18 @@ return {
 
       nvimtree.setup(opts)
 
+      local api = require 'nvim-tree.api'
+      api.events.subscribe(api.events.Event.FileCreated, function(event)
+        if not event.fname:match '%.kt$' then return end
+
+        local directory = vim.fs.dirname(event.fname)
+        local package_path = directory and directory:match '/src/[^/]+/kotlin/(.+)$'
+        if not package_path then return end
+
+        local package_name = package_path:gsub('/', '.')
+        vim.fn.writefile({ 'package ' .. package_name, '', '' }, event.fname)
+      end)
+
       local function open_tree_on_setup(args)
         vim.schedule(function()
           local file = args.file
