@@ -162,6 +162,16 @@ vim.o.inccommand = "split"
 -- Show which line your cursor is on
 vim.o.cursorline = true
 
+-- Folding: use Treesitter to fold along syntax (functions, blocks, etc.).
+-- foldlevelstart = 99 opens every file fully unfolded; fold when you want to.
+--  See `:help fold-expr` and `:help vim.treesitter.foldexpr()`
+vim.o.foldmethod = "expr"
+vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.o.foldtext = ""
+vim.o.foldlevel = 99
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.o.scrolloff = 10
 
@@ -192,6 +202,11 @@ vim.keymap.set("n", "<leader>sh", "<C-w>v", { desc = "Split window vertically" }
 vim.keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })
 vim.keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" })
 vim.keymap.set("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Close buffer" })
+
+-- Folding (Treesitter-based, e.g. function blocks)
+vim.keymap.set("n", "<leader>zt", "za", { desc = "[Z] [T]oggle fold under cursor" })
+vim.keymap.set("n", "<leader>zc", "zM", { desc = "[Z] [C]lose all folds" })
+vim.keymap.set("n", "<leader>zo", "zR", { desc = "[Z] [O]pen all folds" })
 
 -- Diagnostic keymaps
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
@@ -263,6 +278,23 @@ vim.api.nvim_create_autocmd("FileChangedShellPost", {
 	group = vim.api.nvim_create_augroup("auto-checktime-notify", { clear = true }),
 	callback = function()
 		vim.notify("File changed on disk. Buffer reloaded.", vim.log.levels.WARN)
+	end,
+})
+
+vim.api.nvim_create_autocmd("BufNewFile", {
+	desc = "Add the package declaration to new Kotlin files",
+	group = vim.api.nvim_create_augroup("kotlin-package", { clear = true }),
+	pattern = "*.kt",
+	callback = function(args)
+		local directory = vim.fs.dirname(vim.api.nvim_buf_get_name(args.buf))
+		local package_path = directory and directory:match("/src/[^/]+/kotlin/(.+)$")
+		if not package_path then
+			return
+		end
+
+		local package_name = package_path:gsub("/", ".")
+		vim.api.nvim_buf_set_lines(args.buf, 0, -1, false, { "package " .. package_name, "", "" })
+		vim.api.nvim_win_set_cursor(0, { 3, 0 })
 	end,
 })
 
@@ -409,6 +441,7 @@ require("lazy").setup({
 			spec = {
 				{ "<leader>s", group = "[S]earch" },
 				{ "<leader>t", group = "[T]oggle" },
+				{ "<leader>z", group = "[Z] Fold" },
 				{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
 			},
 		},
