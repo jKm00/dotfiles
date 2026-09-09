@@ -664,6 +664,22 @@ require("lazy").setup({
 					--  Useful when your language has ways of declaring types without an actual implementation.
 					map("<leader>gi", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
 
+					map("<leader>gI", function()
+						local symbol = vim.fn.expand("<cword>")
+						for line_number, line in ipairs(vim.api.nvim_buf_get_lines(0, 0, -1, false)) do
+							local import_path, alias = line:match("^%s*import%s+([%w_%.]+)%s+as%s+([%w_]+)%s*$")
+							import_path = import_path or line:match("^%s*import%s+([%w_%.]+)%s*$")
+							local imported_name = alias or (import_path and import_path:match("([%w_]+)$"))
+							if imported_name == symbol then
+								vim.cmd("normal! m'")
+								vim.api.nvim_win_set_cursor(0, { line_number, 0 })
+								vim.cmd("normal! ^")
+								return
+							end
+						end
+						vim.notify("No import found for " .. symbol, vim.log.levels.INFO)
+					end, "[G]oto [I]mport")
+
 					-- Jump to the definition of the word under your cursor.
 					--  This is where a variable was first declared, or where a function is defined, etc.
 					--  To jump back, press <C-t>.
