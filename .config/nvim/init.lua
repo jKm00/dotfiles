@@ -203,6 +203,25 @@ vim.keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })
 vim.keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" })
 vim.keymap.set("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Close buffer" })
 
+-- Close all buffers
+vim.keymap.set("n", "<leader>ba", function()
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buflisted then
+      vim.api.nvim_buf_delete(buf, {})
+    end
+  end
+end, { desc = "Close [B]uffers: [A]ll" })
+
+-- Close all buffers except the current one
+vim.keymap.set("n", "<leader>bo", function()
+  local current = vim.api.nvim_get_current_buf()
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if buf ~= current and vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buflisted then
+      vim.api.nvim_buf_delete(buf, {})
+    end
+  end
+end, { desc = "Close [B]uffers: [O]thers" })
+
 -- Folding (Treesitter-based, e.g. function blocks)
 vim.keymap.set("n", "<leader>zt", "za", { desc = "[Z] [T]oggle fold under cursor" })
 vim.keymap.set("n", "<leader>zc", "zM", { desc = "[Z] [C]lose all folds" })
