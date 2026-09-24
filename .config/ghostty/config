@@ -23,6 +23,9 @@ custom-shader-animation = true
 # Treat the left Option key as Alt/Meta so tmux receives M-h/j/k/l, etc.
 macos-option-as-alt = left
 
+# Hide the title bar
+macos-titlebar-style = hidden
+
 # Keybinds
 keybind = cmd+shift+f>1=set_font_size:14
 keybind = cmd+shift+f>2=set_font_size:16

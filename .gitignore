@@ -3,7 +3,7 @@ node_modules
 .zshrc.local
 
 # Machine-local agent guidelines (work-machine only, not public)
-AGENT.md
+AGENTS.md
 
 # Compiled sketchybar helper (machine-specific binary; built from .swift)
 .config/sketchybar/helpers/keyboard_listener
