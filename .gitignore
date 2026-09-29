@@ -8,3 +8,4 @@ AGENTS.md
 # Compiled sketchybar helper (machine-specific binary; built from .swift)
 .config/sketchybar/helpers/keyboard_listener
 .config/sketchybar/helpers/dock_badges
+.config/sketchybar/helpers/app_list

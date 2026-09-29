@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
-# SketchyBar config — oasis.nvim "twilight" theme, AeroSpace-driven.
-# Workspaces show the app icons they contain; right side has clock/battery/volume/wifi.
+# SketchyBar config — oasis.nvim "twilight" theme.
+# Left side is a flat taskbar of open apps (focused one highlighted); right side
+# has clock/battery/volume/wifi/keyboard. Window management is handled outside
+# the bar (Raycast app hotkeys + Rectangle + Cmd-Tab), so there are no workspaces.
 
 CONFIG_DIR="$HOME/.config/sketchybar"
 PLUGIN_DIR="$CONFIG_DIR/plugins"
 source "$CONFIG_DIR/colors.sh"
 
 ##### Custom events #####
-sketchybar --add event aerospace_workspace_change
 sketchybar --add event keyboard_change
 
 ##### Keyboard-layout listener #####
@@ -36,6 +37,18 @@ BADGE_BIN="$CONFIG_DIR/helpers/dock_badges"
   if [ ! -x "$BADGE_BIN" ]; then
     swiftc -O "$BADGE_SRC" -o "$BADGE_BIN" 2>/dev/null \
       && codesign --force --sign - "$BADGE_BIN" 2>/dev/null
+  fi
+} &
+
+##### App-list helper #####
+# Compile the taskbar's open-apps reader once (in the background). Needs no
+# special permissions (NSWorkspace only); the .swift source is tracked, the
+# binary is git-ignored. Recompiled when the source changes.
+APPS_SRC="$CONFIG_DIR/helpers/app_list.swift"
+APPS_BIN="$CONFIG_DIR/helpers/app_list"
+{
+  if [ ! -x "$APPS_BIN" ] || [ "$APPS_SRC" -nt "$APPS_BIN" ]; then
+    swiftc -O "$APPS_SRC" -o "$APPS_BIN" 2>/dev/null
   fi
 } &
 
@@ -68,21 +81,19 @@ default=(
 )
 sketchybar --default "${default[@]}"
 
-##### Workspaces (left) #####
-# Workspace chips + the app icons each contains are created dynamically by
-# spaces.sh (one item per app so badged apps can show a count). The hidden
-# manager drives it on workspace/app changes and every 3s for Dock badges.
-# Reset the render caches so a fresh start always rebuilds the items, and prime
-# the monitor signature so the first cross-monitor switch doesn't force a rebuild.
-rm -f /tmp/sketchybar_spaces_state /tmp/sketchybar_spaces_brackets
-aerospace list-monitors > /tmp/sketchybar_spaces_monitors 2>/dev/null
-sketchybar --add item spaces_manager left \
-  --set spaces_manager \
+##### Open apps taskbar (left) #####
+# One icon per open app is created dynamically by apps.sh (one item per app so
+# badged apps can show a count). A hidden manager drives it on focus/launch/quit
+# and slowly polls for Dock badges + apps that change without moving focus.
+# Reset the render cache so a fresh start always rebuilds the items.
+rm -f /tmp/sketchybar_apps_state
+sketchybar --add item apps_manager left \
+  --set apps_manager \
     drawing=off \
     updates=on \
-    update_freq=3 \
-    script="$PLUGIN_DIR/spaces.sh" \
-  --subscribe spaces_manager aerospace_workspace_change front_app_switched system_woke display_change
+    update_freq=5 \
+    script="$PLUGIN_DIR/apps.sh" \
+  --subscribe apps_manager front_app_switched system_woke
 
 ##### Front app (left) #####
 sketchybar --add item front_app left \
@@ -134,4 +145,4 @@ sketchybar --add item clock right \
 
 ##### Finalize #####
 sketchybar --update
-sketchybar --trigger aerospace_workspace_change
+sketchybar --trigger front_app_switched

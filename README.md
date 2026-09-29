@@ -20,8 +20,7 @@ into `$HOME`. Editing either side edits the same file. Throughout this document
 | bat           | Syntax-highlighting pager — Oasis Twilight theme                       | `.config/bat`        |
 | opencode      | AI TUI — theme, plugins, AGENTS.md, slash commands                     | `.config/opencode`   |
 | Chrome        | Browser — Oasis Twilight unpacked theme                                | `chrome-themes`      |
-| AeroSpace     | Tiling window manager — keybinds, SketchyBar hook                      | `.aerospace.toml`    |
-| SketchyBar    | Status bar — workspaces, app icons, notification badges, clock/battery | `.config/sketchybar` |
+| SketchyBar    | Status bar — open-apps taskbar, notification badges, clock/battery     | `.config/sketchybar` |
 | wallpapers    | Shared terminal wallpaper assets                                       | `.config/wallpapers` |
 | VS Code       | Settings, keybindings, extensions list                                 | `vscode`             |
 
@@ -51,15 +50,17 @@ brew install powerlevel10k zsh-autosuggestions zsh-syntax-highlighting
 # tmux plugin manager (then run `prefix + I` inside tmux to install plugins)
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
-# Window manager, status bar, icon font
-brew install --cask nikitabobko/tap/aerospace
+# Status bar + icon font
 brew tap FelixKratz/formulae && brew install sketchybar
 brew install --cask font-hack-nerd-font
+
+# Window management (window snapping + app launcher + window switcher)
+brew install --cask rectangle raycast alt-tab
 ```
 
 Then create the symlinks (see [Symlinks](#symlinks)) and follow the per-component
 first-run steps: [bat](#bat), [Spotify](#spotify-tmux),
-[AeroSpace + SketchyBar](#aerospace--sketchybar), [opencode](#opencode).
+[SketchyBar](#sketchybar), [opencode](#opencode).
 
 ## Symlinks
 
@@ -77,7 +78,6 @@ Whole-directory / file links:
 ~/.config/wallpapers  -> <repo>/.config/wallpapers
 ~/.zshrc              -> <repo>/.zshrc
 ~/.p10k.zsh           -> <repo>/.p10k.zsh
-~/.aerospace.toml     -> <repo>/.aerospace.toml
 ```
 
 Selective links (directory contains untracked runtime files):
@@ -104,6 +104,7 @@ Not tracked (generated, downloaded, compiled, or machine-local):
 ~/Library/Fonts/sketchybar-app-font.ttf  (installed; see SketchyBar prerequisites)
 ~/.config/sketchybar/helpers/keyboard_listener   (compiled from tracked .swift)
 ~/.config/sketchybar/helpers/dock_badges          (compiled from tracked .swift)
+~/.config/sketchybar/helpers/app_list             (compiled from tracked .swift)
 ```
 
 ## bat
@@ -148,26 +149,28 @@ spotify_player authenticate   # once, with your Spotify account
 
 The `hooks` directory is symlinked, so the script is picked up automatically.
 
-## AeroSpace + SketchyBar
+## SketchyBar
 
-[AeroSpace](https://github.com/nikitabobko/AeroSpace) tiles windows;
 [SketchyBar](https://github.com/FelixKratz/SketchyBar) replaces the macOS menu
-bar. Together they give:
+bar:
 
-- **Left:** one rounded chip per AeroSpace workspace, containing the workspace ID
-  plus an icon for each app it holds. The focused workspace is highlighted in
-  Oasis coral. Apps with a Dock notification badge show the **count next to their
-  icon** — so the Dock can stay hidden. Click any chip to focus that workspace.
+- **Left:** a flat taskbar with one icon per open app (the apps that show in the
+  Dock / Cmd-Tab). The focused app is highlighted in Oasis coral, and its name
+  is shown as a label to the right of the row. Apps with a Dock notification
+  badge show the **count next to their icon** — so the Dock can stay hidden.
+  Click any icon to focus that app (or relaunch it if it has quit).
 - **Right:** clock, battery, volume, and the active keyboard layout (`EN`/`NO`).
+
+Window management lives outside the bar — see [Window management](#window-management).
 
 ### Prerequisites
 
-Installed via [Install](#install): `aerospace`, `sketchybar`,
-`font-hack-nerd-font`, `jq`. Plus:
+Installed via [Install](#install): `sketchybar`, `font-hack-nerd-font`, `jq`.
+Plus:
 
-- **`swiftc`** (Xcode CLT: `xcode-select --install`) — compiles the two Swift
-  helpers below. Without it, the keyboard falls back to a 10s poll and Dock
-  badges won't show.
+- **`swiftc`** (Xcode CLT: `xcode-select --install`) — compiles the three Swift
+  helpers below. Without it, the keyboard falls back to a 10s poll, Dock badges
+  won't show, and the open-apps taskbar can't be rendered.
 - **[`sketchybar-app-font`](https://github.com/kvndrsslr/sketchybar-app-font)** —
   the app-icon glyphs. The `.ttf` is installed to `~/Library/Fonts` (not tracked);
   the matching `icon_map.sh` (app-name → glyph) is vendored in
@@ -184,18 +187,16 @@ Installed via [Install](#install): `aerospace`, `sketchybar`,
 
 ### macOS settings
 
-- **Displays have separate Spaces** ON (default) — _Settings → Desktop & Dock_.
-  AeroSpace requires it.
 - **Hide the menu bar** — _Settings → Control Center → Automatically hide and
   show the menu bar → Always_.
 - **Auto-hide the Dock** — _Settings → Desktop & Dock_ — since notification
   badges now surface in the bar.
-- **Accessibility grants** (_Settings → Privacy & Security → Accessibility_):
-  - **AeroSpace** — required to manage windows (prompts on first launch).
+- **Accessibility grant** (_Settings → Privacy & Security → Accessibility_):
   - **sketchybar** (`/opt/homebrew/bin/sketchybar`) — required to read Dock
     notification badges. sketchybar spawns the badge reader, so macOS attributes
     the permission to the sketchybar binary, not the helper. Without this grant,
-    workspaces still work but badge counts never appear.
+    the taskbar still works but badge counts never appear. (The open-apps reader
+    needs no grant — it uses `NSWorkspace` only.)
 
 ### Start
 
@@ -203,27 +204,28 @@ Installed via [Install](#install): `aerospace`, `sketchybar`,
 brew services start sketchybar   # runs at login
 ```
 
-AeroSpace has `start-at-login = true`; enable it once by launching the app.
-
 ### How it's wired
 
-- `.aerospace.toml` runs `exec-on-workspace-change` to fire the custom
-  `aerospace_workspace_change` SketchyBar event on every workspace switch.
-- `sketchybarrc` defines the bar and a hidden `spaces_manager` item that runs
-  `plugins/spaces.sh` on `aerospace_workspace_change`, `front_app_switched`, and
-  every 3s (badge poll + safety net).
-- `plugins/spaces.sh` renders the left side: it queries windows per workspace
-  (`aerospace list-windows --all`) and Dock badges (`helpers/dock_badges`), then
-  creates one item per workspace (`ws.<id>`), one per app (`wa.<id>.<app>`), and a
-  bracket (`br.<id>`) to group them. Items/brackets are rebuilt only when the set
-  of workspaces/apps changes; badge counts and the focus highlight refresh every
-  run, so the 3s poll doesn't flicker.
-- `plugins/{front_app,clock,battery,volume,keyboard}.sh` handle the other items;
+- `sketchybarrc` defines the bar and a hidden `apps_manager` item that runs
+  `plugins/apps.sh` on `front_app_switched`, `system_woke`, and every 5s (a
+  safety-net poll for Dock badges and for apps that launch/quit without moving
+  focus).
+- `plugins/apps.sh` renders the left side: it queries open apps
+  (`helpers/app_list`) and Dock badges (`helpers/dock_badges`), then creates one
+  item per app (`app.<slug>`). Items are added/removed only when the set of open
+  apps changes; the focus highlight and badge counts refresh every run, and a
+  no-op run exits early so the poll doesn't flicker or drop clicks.
+- `plugins/front_app.sh` shows the focused app's name to the right of the
+  taskbar; `plugins/{clock,battery,volume,keyboard}.sh` handle the rest.
   `colors.sh` holds the Oasis Twilight palette (`0xAARRGGBB`) sourced by all.
 
 **Swift helpers** (`helpers/*.swift`, compiled on demand in the background;
 binaries git-ignored, sources tracked):
 
+- `app_list` — prints the running "regular" apps (those in the Dock / Cmd-Tab),
+  one `AppName|isFront` line each, ordered by process id so the row stays stable
+  as focus moves. Needs no permissions (`NSWorkspace` only). Recompiled when its
+  source changes.
 - `keyboard_listener` — observes the
   `com.apple.Carbon.TISNotifySelectedKeyboardInputSourceChanged` distributed
   notification and fires `keyboard_change` for **instant** layout updates (the
@@ -231,6 +233,48 @@ binaries git-ignored, sources tracked):
 - `dock_badges` — reads Dock icon badges via the Accessibility API and prints
   `App|Count`. Compiled only when missing (and ad-hoc signed) so its behavior is
   stable across reloads; the permission that matters is sketchybar's grant above.
+
+## Window management
+
+No auto-tiling window manager (like AeroSpace). Windows are driven by three
+tools, and SketchyBar just reflects the result (it's window-manager-agnostic —
+focus tracking uses the built-in macOS `front_app_switched` event):
+
+- **[Rectangle](https://rectangleapp.com)** — tile/snap/resize/maximize windows
+  with keyboard shortcuts, and reserve the screen-edge gaps below.
+- **[Raycast](https://raycast.com)** — a hotkey per app to jump straight to it
+  (e.g. a "focus browser" bind) instead of a dedicated workspace per app.
+- **[AltTab](https://alt-tab-macos.netlify.app)** — window-level switcher; cycle
+  through open windows with thumbnails (bound to Alt-Tab).
+
+Rectangle, Raycast, and AltTab are configured in-app (not tracked in this repo);
+install them via [Install](#install). Rectangle's screen-edge gaps are the one
+setting that needs applying on a fresh machine — see below.
+
+### Leave room for the bar (Rectangle screen-edge gaps)
+
+SketchyBar is an overlay and doesn't reserve screen space, so a maximized window
+slides **under** the bar. Rectangle can reserve a gap on each screen edge so its
+snap/maximize actions stop short of them. Raycast Window Management only offers a
+single uniform gap, so Rectangle handles this.
+
+Rectangle stores these as macOS `defaults` (there's no standalone config file to
+track), so the reproducible "config" is this snippet — run it once per machine.
+The bar is 40px tall (`sketchybarrc` → `--bar height=40`), so match the top gap
+to it and keep the other edges small:
+
+```sh
+defaults write com.knollsoft.Rectangle screenEdgeGapTop    -int 40
+defaults write com.knollsoft.Rectangle screenEdgeGapBottom -int 10
+defaults write com.knollsoft.Rectangle screenEdgeGapLeft   -int 10
+defaults write com.knollsoft.Rectangle screenEdgeGapRight  -int 10
+# restart Rectangle to apply:
+osascript -e 'quit app "Rectangle"'; open -a Rectangle
+```
+
+Adjust `screenEdgeGapTop` if you change the bar height. This only affects
+Rectangle's snapping; dragging a window manually can still go under the bar.
+To read the current values back: `defaults read com.knollsoft.Rectangle | grep -i screenEdgeGap`.
 
 ## opencode
 
@@ -293,7 +337,6 @@ ghostty +validate-config --config-file ~/.config/ghostty/config
 nvim --headless "+quit"
 opencode debug startup
 tmux source-file ~/.config/tmux/tmux.conf
-aerospace reload-config
 brew services restart sketchybar
 ```
 
