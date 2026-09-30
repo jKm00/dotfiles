@@ -11,10 +11,9 @@
 	diffFilter = delta --color-only
 
 [delta]
-	features = mellow-barbet
+	features = oasis-twilight
 	navigate = true
-	# Override the theme's side-by-side; use a unified (inline) diff instead.
-	; side-by-side = false
+	side-by-side = true
 
 [merge]
 	conflictStyle = zdiff3
@@ -24,37 +23,47 @@
 	colorMoved = default
 
 # delta theme, vendored so it works without an external include path.
-# Source: https://github.com/dandavison/delta/blob/main/themes.gitconfig
-[delta "mellow-barbet"]
-	# author: https://github.com/kvrohit
+# Derived from mellow-barbet (author: https://github.com/kvrohit,
+# https://github.com/dandavison/delta/blob/main/themes.gitconfig) and recolored
+# to the Oasis Twilight palette used across this setup (see .config/bat).
+# Requires the Oasis Twilight bat theme registered (`bat cache --build`).
+[delta "oasis-twilight"]
 	dark = true
-	syntax-theme = base16
+	syntax-theme = Oasis Twilight
 	line-numbers = true
 	side-by-side = true
-	file-style = brightwhite
-	file-decoration-style = none
+	# mellow-barbet look: understated boxed outlines + subtle gutters, in an
+	# on-palette Oasis purple-gray (#4a3358) instead of mellow's neutral gray.
+	file-style = "#F0E4F2" bold
+	file-decoration-style = "#4a3358" box ul
 	file-added-label = [+]
 	file-copied-label = [==]
 	file-modified-label = [*]
 	file-removed-label = [-]
 	file-renamed-label = [->]
-	hunk-header-decoration-style = "#3e3e43" box ul
-	plus-style = brightgreen black
-	plus-emph-style = black green
-	minus-style = brightred black
-	minus-emph-style = black red
-	line-numbers-minus-style = brightred
-	line-numbers-plus-style = brightgreen
-	line-numbers-left-style = "#3e3e43"
-	line-numbers-right-style = "#3e3e43"
-	line-numbers-zero-style = "#57575f"
+	hunk-header-decoration-style = "#4a3358" box ul
+	# Both add/remove lines share a dark Oasis purple background block; the text
+	# color signals the change: blue for additions, coral for deletions. Emphasis
+	# uses a lighter purple to mark the changed portion. Empty-line markers are
+	# filled so the block stays solid across blank added/removed lines.
+	plus-style = "#A9A9ED" "#2f2145"
+	plus-emph-style = "#A9A9ED" "#47356b" bold
+	plus-empty-line-marker-style = normal "#2f2145"
+	minus-style = "#F7997D" "#2f2145"
+	minus-emph-style = "#F7997D" "#47356b" bold
+	minus-empty-line-marker-style = normal "#2f2145"
+	line-numbers-plus-style = "#A9A9ED"
+	line-numbers-minus-style = "#F7997D"
+	line-numbers-left-style = "#4a3358"
+	line-numbers-right-style = "#4a3358"
+	line-numbers-zero-style = "#6b5f80"
 	zero-style = syntax
-	whitespace-error-style = black bold
+	whitespace-error-style = "#FFA0A0" reverse
 	blame-code-style = syntax
-	blame-palette = "#161617" "#1b1b1d" "#2a2a2d" "#3e3e43"
+	blame-palette = "#1B1320" "#261A32" "#362343" "#4a3358"
 	merge-conflict-begin-symbol = ~
 	merge-conflict-end-symbol = ~
-	merge-conflict-ours-diff-header-style = yellow bold
-	merge-conflict-ours-diff-header-decoration-style = "#3e3e43" box
-	merge-conflict-theirs-diff-header-style = yellow bold
-	merge-conflict-theirs-diff-header-decoration-style = "#3e3e43" box
+	merge-conflict-ours-diff-header-style = "#F0E68C" bold
+	merge-conflict-ours-diff-header-decoration-style = "#362343" box
+	merge-conflict-theirs-diff-header-style = "#F0E68C" bold
+	merge-conflict-theirs-diff-header-decoration-style = "#362343" box
