@@ -18,6 +18,8 @@ into `$HOME`. Editing either side edits the same file. Throughout this document
 | Powerlevel10k | Prompt layout and Oasis Twilight colors                                | `.p10k.zsh`          |
 | Nvim          | Editor — Oasis theme, opencode.nvim integration                        | `.config/nvim`       |
 | bat           | Syntax-highlighting pager — Oasis Twilight theme                       | `.config/bat`        |
+| git           | Global git config — editor, merge/diff settings, delta pager           | `.config/git`        |
+| lazygit       | Git TUI — diffs routed through delta                                   | `.config/lazygit`    |
 | opencode      | AI TUI — theme, plugins, AGENTS.md, slash commands                     | `.config/opencode`   |
 | Chrome        | Browser — Oasis Twilight unpacked theme                                | `chrome-themes`      |
 | SketchyBar    | Status bar — open-apps taskbar, notification badges, clock/battery     | `.config/sketchybar` |
@@ -41,7 +43,7 @@ On a fresh machine, clone the repo, then install tools and link the configs.
 
 ```sh
 # Base tools
-brew install ghostty tmux neovim lazygit jq bat thefuck eze fzf fd
+brew install ghostty tmux neovim lazygit jq bat git-delta thefuck eze fzf fd
 
 # Shell and prompt
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -59,7 +61,8 @@ brew install --cask rectangle raycast alt-tab
 ```
 
 Then create the symlinks (see [Symlinks](#symlinks)) and follow the per-component
-first-run steps: [bat](#bat), [Spotify](#spotify-tmux),
+first-run steps: [bat](#bat), [git diffs (delta)](#git-diffs-delta--lazygit),
+[Spotify](#spotify-tmux),
 [SketchyBar](#sketchybar), [opencode](#opencode).
 
 ## Symlinks
@@ -91,7 +94,17 @@ Selective links (directory contains untracked runtime files):
 ~/.config/opencode/themes         -> <repo>/.config/opencode/themes
 ~/.config/opencode/plugin         -> <repo>/.config/opencode/plugin
 ~/.config/opencode/command/*.md   -> <repo>/.config/opencode/command/*.md
+~/.config/git/config               -> <repo>/.config/git/config
+~/Library/Application Support/lazygit/config.yml   -> <repo>/.config/lazygit/config.yml
 ```
+
+`~/.config/git/config` is linked as a single file because the directory also
+holds `~/.config/git/ignore` (machine-local, untracked). Git reads this file
+**alongside** `~/.gitconfig`; identity, credentials, and any work-specific
+settings stay in the untracked `~/.gitconfig` so nothing personal is tracked
+here. lazygit's config lives under `~/Library/Application Support/` on macOS
+(the default when `XDG_CONFIG_HOME` is unset); the directory also holds
+lazygit's runtime `state.yml`, so only `config.yml` is linked.
 
 Not tracked (generated, downloaded, compiled, or machine-local):
 
@@ -115,6 +128,28 @@ theme is registered:
 ```sh
 bat cache --build
 ```
+
+## git diffs (delta) + lazygit
+
+[delta](https://github.com/dandavison/delta) makes `git diff`, `git log -p`,
+`git show`, and lazygit render syntax-highlighted diffs. The tracked config is
+`.config/git/config` (presentation only — see [Symlinks](#symlinks) for how
+identity stays out of the repo) and `.config/lazygit/config.yml`.
+
+**Setup**
+
+```sh
+brew install git-delta   # also in the base Install step
+```
+
+- `.config/git/config` sets `core.pager = delta`,
+  `interactive.diffFilter = delta --color-only`, plus
+  `merge.conflictStyle = zdiff3` and `diff.algorithm = histogram`.
+- `.config/lazygit/config.yml` routes lazygit's diffs through the same delta
+  binary (`git.pagers`).
+
+Without `git-delta` installed, `core.pager = delta` makes `git diff` and lazygit
+error with `delta: command not found` — install it (above) to fix.
 
 ## Spotify (tmux)
 

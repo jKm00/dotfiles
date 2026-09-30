@@ -1,0 +1,9 @@
+# lazygit config, tracked in dotfiles.
+# Symlinked to lazygit's config path (macOS default:
+# ~/Library/Application Support/lazygit/config.yml).
+# Routes diffs through delta so lazygit matches the terminal git setup.
+# Requires delta: `brew install git-delta`.
+git:
+  pagers:
+    - colorArg: always
+      pager: delta --dark --paging=never
