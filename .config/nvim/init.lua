@@ -1040,7 +1040,7 @@ require("lazy").setup({
 					css = { "prettier" },
 					html = { "prettier" },
 					json = { "prettier" },
-					yaml = { "prettier" },
+					yaml = { "prettier_yaml" },
 					markdown = { "prettier" },
 					graphql = { "prettier" },
 					liquid = { "prettier" },
@@ -1062,6 +1062,16 @@ require("lazy").setup({
 					["terraform-vars"] = { "terraform_fmt" },
 				},
 				formatters = {
+					-- Only run prettier on YAML when the project has a prettier
+					-- config (.prettierrc*, prettier.config.*, or a "prettier" key
+					-- in package.json). Prettier always indents sequences under
+					-- their parent key, which rewrites every file in repos like
+					-- dnb/savings server-side that have no YAML formatter and mix
+					-- both indentation styles. Without a config, YAML is left as-is.
+					prettier_yaml = {
+						inherit = "prettier",
+						require_cwd = true,
+					},
 					-- ktlint 1.8 removed the `--code-style` flag, so the IntelliJ
 					-- style is supplied via a default .editorconfig passed with
 					-- `--editorconfig` (used only for properties the project's own
@@ -1088,6 +1098,11 @@ require("lazy").setup({
 					-- configured formatter, else the LSP formatter).
 					if vim.bo[bufnr].filetype == "kotlin" then
 						return { timeout_ms = 3000, async = false, lsp_format = "prefer" }
+					end
+					-- YAML: never fall back to LSP formatting (yamlls also
+					-- formats via prettier), see prettier_yaml above.
+					if vim.bo[bufnr].filetype == "yaml" then
+						return { timeout_ms = 3000, async = false, lsp_format = "never" }
 					end
 					return { timeout_ms = 3000, async = false, lsp_format = "fallback" }
 				end,
