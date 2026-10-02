@@ -1,31 +1,55 @@
-# Font
+#### FONT ####
 font-family = DankMono Nerd Font
 font-size = 16
 font-thicken = true
 
+#### KEYBINDS ###
+keybind = cmd+shift+f>1=set_font_size:14
+keybind = cmd+shift+f>2=set_font_size:16
 
-# Theme 
+#### OPTIONS ####
+# Treat the left Option key as Alt/Meta so tmux receives M-h/j/k/l, etc.
+macos-option-as-alt = left
+# Hide the title bar
+macos-titlebar-style = hidden
+
+#### THEME #### 
 background-image-fit = cover
 background-image-position = center
 background = #1B1320
 background-image = ~/.config/wallpapers/bg-blurred-darker.png
 background-image-opacity = 0.90
-
 theme = tokyonight
 
-# Shaders
-custom-shader = shaders/party_sparks.glsl
-custom-shader = shaders/cursor_smear.glsl
-custom-shader = shaders/cursor_twilight_frozen.glsl
-custom-shader = shaders/cursor_border_twilight_frosted.glsl
+#### SHADERS ####
+
 custom-shader-animation = true
 
-# Treat the left Option key as Alt/Meta so tmux receives M-h/j/k/l, etc.
-macos-option-as-alt = left
+### Cursor ###
+## Twilight ##
+# custom-shader = shaders/cursor/particles/sparks-party.glsl
+# custom-shader = shaders/cursor/trail/smear.glsl
+# custom-shader = shaders/cursor/trail/frozen-twilight.glsl
+# custom-shader = shaders/cursor/border/frosted-twilight.glsl
 
-# Hide the title bar
-macos-titlebar-style = hidden
+## Frozen ##
+custom-shader = shaders/cursor/particles/sparks-party.glsl
+custom-shader = shaders/cursor/border/frosted.glsl
+custom-shader = shaders/cursor/trail/frozen.glsl
+custom-shader = shaders/cursor/trail/smear.glsl
 
-# Keybinds
-keybind = cmd+shift+f>1=set_font_size:14
-keybind = cmd+shift+f>2=set_font_size:16
+### Display ###
+
+## Old School Colorized ##
+# custom-shader = shaders/display/retro/crt-simple.glsl
+# custom-shader = shaders/display/retro/tft.glsl
+
+## Green terminal ##
+# custom-shader = shaders/display/retro/crt-teal.glsl
+
+## Crazy glitchy ##
+# custom-shader = shaders/display/retro/crt-simple.glsl
+# custom-shader = shaders/display/distortion/glitchy.glsl
+# custom-shader = shaders/display/glow/bloom.glsl
+# custom-shader = shaders/display/distortion/water.glsl
+
