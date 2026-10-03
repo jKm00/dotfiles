@@ -10,21 +10,21 @@ into `$HOME`. Editing either side edits the same file. Throughout this document
 
 ## What's inside
 
-| Config        | What it does                                                           | Path                 |
-| ------------- | ---------------------------------------------------------------------- | -------------------- |
-| Ghostty       | Terminal — theme, wallpaper, opacity, shaders                          | `.config/ghostty`    |
-| tmux          | Multiplexer — Oasis Twilight theme, Spotify integration                | `.config/tmux`       |
-| zsh           | Shell config and aliases                                               | `.zshrc`             |
-| Powerlevel10k | Prompt layout and Oasis Twilight colors                                | `.p10k.zsh`          |
-| Nvim          | Editor — Oasis theme, opencode.nvim integration                        | `.config/nvim`       |
-| bat           | Syntax-highlighting pager — Oasis Twilight theme                       | `.config/bat`        |
-| git           | Global git config — editor, merge/diff settings, delta pager           | `.config/git`        |
-| lazygit       | Git TUI — diffs routed through delta                                   | `.config/lazygit`    |
-| opencode      | AI TUI — theme, plugins, AGENTS.md, slash commands                     | `.config/opencode`   |
-| Chrome        | Browser — Oasis Twilight unpacked theme                                | `chrome-themes`      |
-| SketchyBar    | Status bar — open-apps taskbar, notification badges, clock/battery     | `.config/sketchybar` |
-| wallpapers    | Shared terminal wallpaper assets                                       | `.config/wallpapers` |
-| VS Code       | Settings, keybindings, extensions list                                 | `vscode`             |
+| Config        | What it does                                                       | Path                 |
+| ------------- | ------------------------------------------------------------------ | -------------------- |
+| Ghostty       | Terminal — theme, wallpaper, opacity, shaders                      | `.config/ghostty`    |
+| tmux          | Multiplexer — Oasis Twilight theme, Spotify integration            | `.config/tmux`       |
+| zsh           | Shell config and aliases                                           | `.zshrc`             |
+| Powerlevel10k | Prompt layout and Oasis Twilight colors                            | `.p10k.zsh`          |
+| Nvim          | Editor — Oasis theme, opencode.nvim integration                    | `.config/nvim`       |
+| bat           | Syntax-highlighting pager — Oasis Twilight theme                   | `.config/bat`        |
+| git           | Global git config — editor, merge/diff settings, delta pager       | `.config/git`        |
+| lazygit       | Git TUI — diffs routed through delta                               | `.config/lazygit`    |
+| opencode      | AI TUI — theme, plugins, AGENTS.md, slash commands                 | `.config/opencode`   |
+| Chrome        | Browser — Oasis Twilight unpacked theme                            | `chrome-themes`      |
+| SketchyBar    | Status bar — open-apps taskbar, notification badges, clock/battery | `.config/sketchybar` |
+| wallpapers    | Shared terminal wallpaper assets                                   | `.config/wallpapers` |
+| VS Code       | Settings, keybindings, extensions list                             | `vscode`             |
 
 The theme direction is **Oasis Twilight** across Ghostty, tmux, Nvim,
 Powerlevel10k, bat, opencode and SketchyBar.
@@ -300,9 +300,9 @@ to it and keep the other edges small:
 
 ```sh
 defaults write com.knollsoft.Rectangle screenEdgeGapTop    -int 40
-defaults write com.knollsoft.Rectangle screenEdgeGapBottom -int 10
-defaults write com.knollsoft.Rectangle screenEdgeGapLeft   -int 10
-defaults write com.knollsoft.Rectangle screenEdgeGapRight  -int 10
+defaults write com.knollsoft.Rectangle screenEdgeGapBottom -int 5
+defaults write com.knollsoft.Rectangle screenEdgeGapLeft   -int 5
+defaults write com.knollsoft.Rectangle screenEdgeGapRight  -int 5
 # restart Rectangle to apply:
 osascript -e 'quit app "Rectangle"'; open -a Rectangle
 ```
