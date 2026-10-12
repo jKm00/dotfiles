@@ -21,13 +21,14 @@ into `$HOME`. Editing either side edits the same file. Throughout this document
 | git           | Global git config — editor, merge/diff settings, delta pager       | `.config/git`        |
 | lazygit       | Git TUI — diffs routed through delta                               | `.config/lazygit`    |
 | opencode      | AI TUI — theme, plugins, AGENTS.md, slash commands                 | `.config/opencode`   |
+| Claude Code   | AI TUI — Oasis Twilight custom theme                               | `.claude/themes`     |
 | Chrome        | Browser — Oasis Twilight unpacked theme                            | `chrome-themes`      |
 | SketchyBar    | Status bar — open-apps taskbar, notification badges, clock/battery | `.config/sketchybar` |
 | wallpapers    | Shared terminal wallpaper assets                                   | `.config/wallpapers` |
 | VS Code       | Settings, keybindings, extensions list                             | `vscode`             |
 
 The theme direction is **Oasis Twilight** across Ghostty, tmux, Nvim,
-Powerlevel10k, bat, opencode and SketchyBar.
+Powerlevel10k, bat, opencode, Claude Code and SketchyBar.
 
 ## Chrome theme
 
