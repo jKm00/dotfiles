@@ -14,6 +14,10 @@
       "url": "https://mcp.atlassian.com/v1/mcp",
       "oauth": {}
     },
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "@playwright/mcp@latest"]
+    },
     "developer-portal": {
       "type": "remote",
       "url": "https://mcp.prod.devportal.tech-03.net/app/mcp",
