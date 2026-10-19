@@ -306,7 +306,9 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 	pattern = "*.kt",
 	callback = function(args)
 		local directory = vim.fs.dirname(vim.api.nvim_buf_get_name(args.buf))
-		local package_path = directory and directory:match("/src/[^/]+/kotlin/(.+)$")
+		-- Android projects keep Kotlin sources under src/<set>/java/.
+		local package_path = directory
+			and (directory:match("/src/[^/]+/kotlin/(.+)$") or directory:match("/src/[^/]+/java/(.+)$"))
 		if not package_path then
 			return
 		end
@@ -1006,6 +1008,10 @@ require("lazy").setup({
 			--   rm -rf ~/.local/share/kotlin-lsp/server
 			--   cp -R ext/extension/server ~/.local/share/kotlin-lsp/server
 			-- (list versions via the Marketplace extensionquery API).
+			-- After re-extracting, raise -Xmx in
+			-- ~/.local/share/kotlin-lsp/server/bin/intellij-server.vmoptions
+			-- (ships as 2048m, which is too small for large multi-module
+			-- Gradle/Android projects; 8g is used here).
 			local marketplace_server = vim.fn.expand("~/.local/share/kotlin-lsp/server/bin/intellij-server")
 			if vim.fn.executable(marketplace_server) == 1 then
 				vim.lsp.config("kotlin_lsp", { cmd = { marketplace_server, "--stdio" } })
@@ -1094,6 +1100,12 @@ require("lazy").setup({
 					},
 				},
 				format_on_save = function(bufnr)
+					-- :FormatDisable (global) / :FormatDisable! (this buffer)
+					-- turns this off, e.g. to edit a legacy file without
+					-- reformatting unrelated lines. :FormatEnable undoes it.
+					if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+						return
+					end
 					-- Kotlin: prefer the IntelliJ-based kotlin_lsp, fall back to
 					-- ktlint. Everything else keeps the previous behavior (run the
 					-- configured formatter, else the LSP formatter).
@@ -1108,6 +1120,19 @@ require("lazy").setup({
 					return { timeout_ms = 3000, async = false, lsp_format = "fallback" }
 				end,
 			})
+
+			vim.api.nvim_create_user_command("FormatDisable", function(args)
+				if args.bang then
+					vim.b.disable_autoformat = true
+				else
+					vim.g.disable_autoformat = true
+				end
+			end, { desc = "Disable format on save (! = this buffer only)", bang = true })
+
+			vim.api.nvim_create_user_command("FormatEnable", function()
+				vim.b.disable_autoformat = false
+				vim.g.disable_autoformat = false
+			end, { desc = "Re-enable format on save" })
 		end,
 		-- opts = {
 		-- 	notify_on_error = false,
@@ -1374,6 +1399,7 @@ require("lazy").setup({
 					"typescript",
 					"vim",
 					"vimdoc",
+					"xml",
 					"yaml",
 				},
 				highlight = {

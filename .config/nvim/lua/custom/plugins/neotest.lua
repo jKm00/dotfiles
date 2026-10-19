@@ -6,7 +6,8 @@
 --
 -- For this Kotlin + Gradle project we use the community `neotest-gradle`
 -- adapter, which shells out to `./gradlew test --tests <pattern>` and parses
--- the JUnit XML reports Gradle writes to build/test-results/.
+-- the JUnit XML reports Gradle writes to build/test-results/. In Android
+-- modules it runs the variant unit-test task (`testDebugUnitTest`) instead.
 --
 -- Keymaps (all under <leader>t = [T]est):
 --   <leader>tr  run nearest test (under cursor)
@@ -91,6 +92,41 @@ return {
 		local find_project_directory = require("neotest-gradle.hooks.find_project_directory")
 		local original_build_spec = require("neotest-gradle.hooks.build_run_specification")
 
+		-- A Gradle module is treated as Android when it has a manifest or its
+		-- build script mentions android (AGP plugin ids, `android {}` block,
+		-- convention plugins). JVM-only modules that merely depend on Android
+		-- tooling (kotlin("jvm"), java-library, the lint-check plugin) keep
+		-- the plain `test` task. Cached per module directory.
+		local android_module_cache = {}
+		local function is_android_module(project_directory)
+			local cached = android_module_cache[project_directory]
+			if cached ~= nil then
+				return cached
+			end
+
+			local result = false
+			if vim.uv.fs_stat(project_directory .. "/src/main/AndroidManifest.xml") then
+				result = true
+			else
+				for _, name in ipairs({ "build.gradle.kts", "build.gradle" }) do
+					local file = io.open(project_directory .. "/" .. name, "r")
+					if file then
+						local text = file:read("*a")
+						file:close()
+						local jvm_only = text:find('kotlin%("jvm"%)')
+							or text:find("org%.jetbrains%.kotlin%.jvm")
+							or text:find("java%-library")
+							or text:find("com%.android%.lint")
+						result = not jvm_only and text:find("android") ~= nil
+						break
+					end
+				end
+			end
+
+			android_module_cache[project_directory] = result
+			return result
+		end
+
 		-- The upstream neotest-gradle adapter discovers the JUnit results
 		-- directory by running `gradle properties --property testResultsDir`
 		-- and parsing the output. On Gradle 9.x that property prints as
@@ -111,8 +147,24 @@ return {
 			local position = arguments.tree:data()
 			local project_directory = find_project_directory(position.path)
 			local sep = lib.files.sep
+
+			-- Android modules have no `test` task that accepts `--tests`:
+			-- unit tests run per build variant and report to
+			-- build/test-results/<task>. Override the task for modules with
+			-- product flavors, e.g.
+			--   :let g:neotest_gradle_android_test_task = "testFreeDebugUnitTest"
+			local test_task = "test"
+			if is_android_module(project_directory) then
+				test_task = vim.g.neotest_gradle_android_test_task or "testDebugUnitTest"
+				local replaced
+				spec.command, replaced = spec.command:gsub(" test( )", " " .. test_task .. "%1", 1)
+				if replaced == 0 then
+					spec.command = spec.command:gsub(" test$", " " .. test_task, 1)
+				end
+			end
+
 			local results_dir = table.concat(
-				{ project_directory, "build", "test-results", "test" },
+				{ project_directory, "build", "test-results", test_task },
 				sep
 			)
 
